@@ -1,0 +1,25 @@
+.constructor-element {
+    display: flex;
+    align-items: center;
+}
+
+.constructor-container {
+    display: grid;
+    grid-gap: 18px;
+    max-height: 500px;
+}
+
+.list {
+    overflow: auto;
+}
+
+.order-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.price-container {
+    display: flex;
+    align-items: center;
+}
