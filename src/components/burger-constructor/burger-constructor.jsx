@@ -17,7 +17,6 @@ const DragIconWrapper = () => {
 
 const Bun = (props) => {
     const { _id, type, name, price, image_mobile } = props;
-    console.log(type);
 
     return (
         <div className={cx(styles['constructor-element'], 'pl-8')}>
