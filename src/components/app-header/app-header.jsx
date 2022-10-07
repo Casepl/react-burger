@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { Logo, BurgerIcon, ListIcon,  ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import style from './index.module.css';
+import style from './app-header.module.css';
 
 const menu = [
     {

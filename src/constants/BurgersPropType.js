@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const ingredients = PropTypes.shape({
+const ingredient = PropTypes.shape({
     "_id": PropTypes.string.isRequired,
     "name": PropTypes.string.isRequired,
     "type": PropTypes.string.isRequired,
@@ -9,7 +9,7 @@ const ingredients = PropTypes.shape({
     "image_mobile": PropTypes.string,
 });
 
-const props = PropTypes.arrayOf(ingredients);
+const ingredientsArrayType = PropTypes.arrayOf(ingredient);
 
 
-export default props;
+export default ingredientsArrayType;

@@ -1,15 +1,16 @@
 import { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Tab,  CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgersPropType  from '../../constants/BurgersPropType';
-import styles from './index.module.css';
-import PropTypes from 'prop-types';
+import styles from './burger-ingredients.module.css';
+
 
 const Tabs = () => {
     const [current, setCurrent] = useState('bun');
 
     return (
-        <div style={{ display: 'flex' }}>
+        <div className={styles.tabs}>
             <Tab value='bun' active={current === 'bun'} onClick={setCurrent}>
                Булка
             </Tab>

@@ -1,10 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
-import AppHeader from './components/app-header';
-import BurgerIngredients from './components/burger-ingredients';
-import BurgerConstructor from "./components/burger-constructor";
-import data from './utils/data';
-import styles from './App.module.css';
+import AppHeader from '../app-header/app-header';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from "../burger-constructor/burger-constructor";
+import data from '../../utils/data';
+import styles from './app.module.css';
 
 function App() {
   return (
