@@ -2,7 +2,7 @@ import {useCallback, useMemo, useState} from 'react';
 import cx from 'classnames';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/order-details';
-import { ingredientsArrayType } from '../../constants/burgers-prop-type';
+import { ingredientsArrayType, ingredientType } from '../../constants/burgers-prop-type';
 import styles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
 
@@ -17,7 +17,7 @@ const DragIconWrapper = () => {
 }
 
 const Bun = (props) => {
-    const { _id, type, name, price, image_mobile } = props;
+    const { bun: {_id,  name, price, image_mobile}, type } = props;
     return (
         <>
             {name && (<div className={cx(styles['constructor-element'], 'pl-8')}>
@@ -32,6 +32,11 @@ const Bun = (props) => {
             </div>)}
         </>
     );
+}
+
+Bun.prototype = {
+    bun: ingredientType.isRequired,
+    type: PropTypes.string.isRequired
 }
 
 const Price = (props) => {
@@ -88,7 +93,7 @@ const BurgerConstructor = (props) => {
     return (
         <div className={cx('pt-25 pl-4 pr-4')}>
             <div className={cx(styles['constructor-wrapper'], 'mb-10')}>
-                <Bun {...elements.bun} type='top' name={bunNameFormatter(elements.bun.name, 'up')} />
+                <Bun bun={elements.bun} type='top' name={bunNameFormatter(elements.bun.name, 'up')} />
                 <div className={cx(styles.list, styles['constructor-container'])}>
                     {elements.constructorElements.map((item) => {
                         return (
@@ -105,7 +110,7 @@ const BurgerConstructor = (props) => {
                         )
                     })}
                 </div>
-                <Bun {...elements.bun} type='bottom' name={bunNameFormatter(elements.bun.name, 'down')} />
+                <Bun bun={elements.bun} type='bottom' name={bunNameFormatter(elements.bun.name, 'down')} />
             </div>
             <div className={styles['order-container']}>
                 <Price total={610} />
