@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import {useCallback, useMemo, useState} from 'react';
 import cx from 'classnames';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import burgersPropType from '../../constants/BurgersPropType';
+import OrderDetails from '../order-details/order-details';
+import { ingredientsArrayType } from '../../constants/burgers-prop-type';
 import styles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
 
@@ -17,18 +18,19 @@ const DragIconWrapper = () => {
 
 const Bun = (props) => {
     const { _id, type, name, price, image_mobile } = props;
-
     return (
-        <div className={cx(styles['constructor-element'], 'pl-8')}>
-            <ConstructorElement
-                key={_id}
-                type={type}
-                isLocked
-                text={name}
-                price={price}
-                thumbnail={image_mobile}
-            />
-        </div>
+        <>
+            {name && (<div className={cx(styles['constructor-element'], 'pl-8')}>
+                <ConstructorElement
+                    key={_id}
+                    type={type}
+                    isLocked
+                    text={name}
+                    price={price}
+                    thumbnail={image_mobile}
+                />
+            </div>)}
+        </>
     );
 }
 
@@ -52,11 +54,17 @@ Price.propTypes = {
 }
 
 const bunNameFormatter = (name, direction) => {
-    return name + (direction === 'up' ? ' (вeрх)' : ' (вниз)');
+    if(!name) {
+        return;
+    }
+
+    return name + (direction === 'up' ? ' (вeрх)' : ' (низ)');
 }
 
 const BurgerConstructor = (props) => {
-    const {data} = props;
+    const [isShowOrderDetails, setShowOrderDetails] = useState(false);
+
+    const { data } = props;
 
     const elements = useMemo(()=> {
         const constructorElements = data.filter((el) => el.type !== 'bun');
@@ -67,6 +75,15 @@ const BurgerConstructor = (props) => {
             constructorElements
         }
     }, [data]);
+
+
+    const handleOrderClick = useCallback(()=> {
+        setShowOrderDetails(true);
+    }, []);
+
+    const handleCloseOrderDetails = useCallback(()=> {
+        setShowOrderDetails(false);
+    }, [])
 
     return (
         <div className={cx('pt-25 pl-4 pr-4')}>
@@ -92,14 +109,15 @@ const BurgerConstructor = (props) => {
             </div>
             <div className={styles['order-container']}>
                 <Price total={610} />
-                <Button type='primary' size='medium' htmlType='button' >
+                <Button type='primary' size='medium' htmlType='button' onClick={handleOrderClick}>
                     Оформить заказ
                 </Button>
             </div>
+            {isShowOrderDetails && <OrderDetails onClose={handleCloseOrderDetails} />}
         </div>
     )
 }
 BurgerConstructor.propTypes = {
-    data: burgersPropType
+    data: ingredientsArrayType
 }
 export default BurgerConstructor;

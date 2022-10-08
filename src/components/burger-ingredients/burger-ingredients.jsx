@@ -1,9 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Tab,  CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import burgersPropType  from '../../constants/BurgersPropType';
+import { ingredientsArrayType }  from '../../constants/burgers-prop-type';
 import styles from './burger-ingredients.module.css';
+import IngredientDetails from "../ingredient-details/ingridient-details";
 
 
 const Tabs = () => {
@@ -25,10 +26,10 @@ const Tabs = () => {
 }
 
 const Tile = (props) => {
-    const { name, image, price } = props;
+    const { name, image, price, onTileClick } = props;
 
     return (
-        <div className={styles['tile-container']}>
+        <div className={styles['tile-container']} onClick={onTileClick}>
             <div className='mb-2 pl-4 pr-4'>
                 <img src={image} alt={name} />
             </div>
@@ -50,11 +51,12 @@ const Tile = (props) => {
 Tile.propTypes = {
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired
+    price: PropTypes.number.isRequired,
+    onTileClick: PropTypes.func
 }
 
 const Group = (props) => {
-    const { title, list } = props;
+    const { title, list, onTileClick } = props;
 
     return (
       <div>
@@ -64,7 +66,9 @@ const Group = (props) => {
           <div className={cx(styles['tile-list-container'], 'pt-6', 'pl-4', 'pb-10')}>
               {list.map((item) => {
                   return (
-                      <Tile key={item._id} {...item} />
+                      <Tile key={item._id} {...item} onTileClick={()=> {
+                          onTileClick(item);
+                      }} />
                   );
               })}
           </div>
@@ -74,7 +78,8 @@ const Group = (props) => {
 
 Group.propTypes = {
     title: PropTypes.string.isRequired,
-    list: burgersPropType.isRequired
+    list: ingredientsArrayType.isRequired,
+    onTileClick: PropTypes.func.isRequired
 }
 
 const filterTypes = (type) => (item) => {
@@ -83,6 +88,7 @@ const filterTypes = (type) => (item) => {
 
 const BurgerIngredients = (props) => {
     const { data } = props;
+    const [selectedIngredient, setSelectedIngredient] = useState(null);
 
     const groups = useMemo(() => {
         const buns = data.filter(filterTypes('bun'));
@@ -91,6 +97,14 @@ const BurgerIngredients = (props) => {
 
         return [{title: 'Булки', list: buns}, { title: 'Cоусы', list: sause}, { title: 'Начинки', list: main }]
     }, [data]);
+
+    const handleTileClick = useCallback((ingredient)=>{
+        setSelectedIngredient(ingredient);
+    }, []);
+
+    const handleDetailsClose = useCallback(()=>{
+        setSelectedIngredient(null);
+    }, []);
 
     return (
         <div className='pt-10'>
@@ -102,15 +116,18 @@ const BurgerIngredients = (props) => {
             </div>
             <div className={styles.list}>
                 {groups.map((group,index) => {
-                    return <Group key={index+group.title} {...group} />
+                    return <Group key={index+group.title} {...group} onTileClick={handleTileClick} />
                 })}
             </div>
+            {selectedIngredient && (<IngredientDetails onClose={handleDetailsClose}
+                                                       ingredient={selectedIngredient}
+                                                       header='Детали ингредиента'/>) }
         </div>
     );
 }
 
 BurgerIngredients.propTypes = {
-    data: burgersPropType
+    data: ingredientsArrayType
 }
 
 export default BurgerIngredients;
