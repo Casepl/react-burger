@@ -1,11 +1,11 @@
 import {useCallback, useMemo, useState} from 'react';
 import cx from 'classnames';
 import {ConstructorElement, DragIcon, CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { ingredientsArrayType, ingredientType } from '../../constants/burgers-prop-type';
+import {ingredientsArrayType, ingredientType} from '../../constants/burgers-prop-type';
 import styles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
-
 
 
 const DragIconWrapper = () => {
@@ -17,7 +17,7 @@ const DragIconWrapper = () => {
 }
 
 const Bun = (props) => {
-    const { bun: {_id,  name, price, image_mobile}, type } = props;
+    const {bun: {_id, name, price, image_mobile}, type} = props;
     return (
         <>
             {name && (<div className={cx(styles['constructor-element'], 'pl-8')}>
@@ -40,7 +40,7 @@ Bun.prototype = {
 }
 
 const Price = (props) => {
-    const { total } = props;
+    const {total} = props;
 
     return (
         <div className={cx(styles['price-container'], 'mr-10')}>
@@ -59,7 +59,7 @@ Price.propTypes = {
 }
 
 const bunNameFormatter = (name, direction) => {
-    if(!name) {
+    if (!name) {
         return;
     }
 
@@ -69,9 +69,9 @@ const bunNameFormatter = (name, direction) => {
 const BurgerConstructor = (props) => {
     const [isShowOrderDetails, setShowOrderDetails] = useState(false);
 
-    const { data } = props;
+    const {data} = props;
 
-    const elements = useMemo(()=> {
+    const elements = useMemo(() => {
         const constructorElements = data.filter((el) => el.type !== 'bun');
         const bun = {...data[0]};
 
@@ -82,22 +82,22 @@ const BurgerConstructor = (props) => {
     }, [data]);
 
 
-    const handleOrderClick = useCallback(()=> {
+    const handleOrderClick = useCallback(() => {
         setShowOrderDetails(true);
     }, []);
 
-    const handleCloseOrderDetails = useCallback(()=> {
+    const handleCloseOrderDetails = useCallback(() => {
         setShowOrderDetails(false);
     }, [])
 
     return (
         <div className={cx('pt-25 pl-4 pr-4')}>
             <div className={cx(styles['constructor-wrapper'], 'mb-10')}>
-                <Bun bun={elements.bun} type='top' name={bunNameFormatter(elements.bun.name, 'up')} />
+                <Bun bun={elements.bun} type='top' name={bunNameFormatter(elements.bun.name, 'up')}/>
                 <div className={cx(styles.list, styles['constructor-container'])}>
                     {elements.constructorElements.map((item) => {
                         return (
-                            <div  key={item._id} className={styles['constructor-element']}>
+                            <div key={item._id} className={styles['constructor-element']}>
                                 <DragIconWrapper/>
                                 <ConstructorElement
                                     key={item._id}
@@ -110,19 +110,23 @@ const BurgerConstructor = (props) => {
                         )
                     })}
                 </div>
-                <Bun bun={elements.bun} type='bottom' name={bunNameFormatter(elements.bun.name, 'down')} />
+                <Bun bun={elements.bun} type='bottom' name={bunNameFormatter(elements.bun.name, 'down')}/>
             </div>
             <div className={styles['order-container']}>
-                <Price total={610} />
+                <Price total={610}/>
                 <Button type='primary' size='medium' htmlType='button' onClick={handleOrderClick}>
                     Оформить заказ
                 </Button>
             </div>
-            {isShowOrderDetails && <OrderDetails onClose={handleCloseOrderDetails} />}
+            {isShowOrderDetails && (
+                <Modal onClose={handleCloseOrderDetails}>
+                    <OrderDetails/>
+                </Modal>)
+            }
         </div>
     )
 }
 BurgerConstructor.propTypes = {
-    data: ingredientsArrayType
+    data: ingredientsArrayType.isRequired
 }
 export default BurgerConstructor;
