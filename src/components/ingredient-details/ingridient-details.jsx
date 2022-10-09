@@ -18,7 +18,7 @@ const CFPItem = (props) => {
 
 CFPItem.propTypes = {
   name: PropTypes.string.isRequired,
-  quantity: PropTypes.string.isRequired
+  quantity: PropTypes.number.isRequired
 }
 
 const IngredientDetails = (props) => {
