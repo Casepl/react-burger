@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import styles from './ingridient-details.module.css';
 import {ingredientType} from "../../constants/burgers-prop-type";
+import PropTypes from 'prop-types';
 
 
 const CFPItem = (props) => {
@@ -14,6 +15,12 @@ const CFPItem = (props) => {
     );
 
 }
+
+CFPItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  quantity: PropTypes.string.isRequired
+}
+
 const IngredientDetails = (props) => {
     const {ingredient: {image_large, name, proteins, fat, carbohydrates, calories} } = props;
 
