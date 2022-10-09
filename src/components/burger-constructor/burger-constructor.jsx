@@ -18,6 +18,11 @@ const DragIconWrapper = () => {
 
 const Bun = (props) => {
     const {bun: {_id, name, price, image_mobile}, type} = props;
+
+    const bunName = useMemo(() => {
+        return bunNameFormatter(name, type);
+    }, [name, type]);
+
     return (
         <>
             {name && (<div className={cx(styles['constructor-element'], 'pl-8')}>
@@ -25,7 +30,7 @@ const Bun = (props) => {
                     key={_id}
                     type={type}
                     isLocked
-                    text={name}
+                    text={bunName}
                     price={price}
                     thumbnail={image_mobile}
                 />
@@ -63,7 +68,7 @@ const bunNameFormatter = (name, direction) => {
         return;
     }
 
-    return name + (direction === 'up' ? ' (вeрх)' : ' (низ)');
+    return name + (direction === 'top' ? ' (вeрх)' : ' (низ)');
 }
 
 const BurgerConstructor = (props) => {
@@ -93,7 +98,7 @@ const BurgerConstructor = (props) => {
     return (
         <div className={cx('pt-25 pl-4 pr-4')}>
             <div className={cx(styles['constructor-wrapper'], 'mb-10')}>
-                <Bun bun={elements.bun} type='top' name={bunNameFormatter(elements.bun.name, 'up')}/>
+                <Bun bun={elements.bun} type='top' />
                 <div className={cx(styles.list, styles['constructor-container'])}>
                     {elements.constructorElements.map((item) => {
                         return (
@@ -110,7 +115,7 @@ const BurgerConstructor = (props) => {
                         )
                     })}
                 </div>
-                <Bun bun={elements.bun} type='bottom' name={bunNameFormatter(elements.bun.name, 'down')}/>
+                <Bun bun={elements.bun} type='bottom'/>
             </div>
             <div className={styles['order-container']}>
                 <Price total={610}/>

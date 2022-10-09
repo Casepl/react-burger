@@ -120,9 +120,7 @@ const BurgerIngredients = (props) => {
             </div>
             {selectedIngredient && (
                 <Modal header='Детали ингредиента' onClose={handleDetailsClose}>
-                    <IngredientDetails onClose={handleDetailsClose}
-                                       ingredient={selectedIngredient}
-                                       header='Детали ингредиента'/>
+                    <IngredientDetails ingredient={selectedIngredient} />
                 </Modal>)
             }
         </div>

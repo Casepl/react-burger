@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import cx from 'classnames';
 import styles from './ingridient-details.module.css';
 import {ingredientType} from "../../constants/burgers-prop-type";
@@ -39,7 +38,6 @@ const IngredientDetails = (props) => {
 }
 
 IngredientDetails.propTypes = {
-    onClose: PropTypes.func.isRequired,
     ingredient: ingredientType.isRequired
 }
 
