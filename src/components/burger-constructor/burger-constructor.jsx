@@ -109,10 +109,8 @@ function reducer(state, action) {
   }
 }
 
-const sendOrder = (ingredients, setError, setIsLoading, setOrderId) => {
+const sendOrder = (ingredients) => {
   const ids = ingredients.map(({ _id }) => _id);
-
-  setIsLoading(true);
 
   return fetch(OrdersURL, {
     method: 'POST',
@@ -127,13 +125,7 @@ const sendOrder = (ingredients, setError, setIsLoading, setOrderId) => {
         throw new Error('Не получается сделать заказ 🥹');
       }
 
-      setOrderId(json.order.number);
-    })
-    .catch((e) => {
-      setError(e.message);
-    })
-    .finally(() => {
-      setIsLoading(false);
+      return json.order.number;
     });
 };
 
@@ -169,10 +161,16 @@ const BurgerConstructor = () => {
   }, [ingredients]);
 
   const handleOrderClick = useCallback(() => {
+    setIsLoading(true);
     sendOrder(ingredients, setError, setIsLoading, setOrderId)
-      .then(() => {
+      .then((orderId) => {
+        setOrderId(orderId);
         setShowOrderDetails(true);
-      });
+      }).catch((e) => {
+        setError(typeof e === 'string' ? e : e.message);
+      }).finally(()=> {
+        setIsLoading(false);
+      })
   }, [ingredients, setError]);
 
   const handleCloseOrderDetails = useCallback(() => {
