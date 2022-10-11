@@ -162,7 +162,7 @@ const BurgerConstructor = () => {
 
   const handleOrderClick = useCallback(() => {
     setIsLoading(true);
-    sendOrder(ingredients, setError, setIsLoading, setOrderId)
+    sendOrder(ingredients)
       .then((orderId) => {
         setOrderId(orderId);
         setShowOrderDetails(true);
