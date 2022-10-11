@@ -6,6 +6,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import Modal from '../modal/modal';
+import { BurgerIngridientsContext, ErrorContext } from '../../services/app-context';
 import {BurgersIngridientsURL} from '../../constants/url-list';
 import styles from './app.module.css';
 
@@ -50,22 +51,26 @@ function App() {
     }, [])
 
     return (
-        <div className={styles.root}>
-            <AppHeader/>
-            <main className={cx(styles['content-root'])}>
-                <section className={styles['content-container']}>
-                    {data ? (<>
-                        <BurgerIngredients data={data}/>
-                        <BurgerConstructor data={data}/>
-                    </>) : null}
-                </section>
-            </main>
-            {error &&
-                (<ShowErrorModal onClose={handleCloseErrorModal}>
-                    {error}
-                </ShowErrorModal>)
-            }
-        </div>
+      <ErrorContext.Provider value={{setError, error}}>
+          <BurgerIngridientsContext.Provider value={data}>
+            <div className={styles.root}>
+                <AppHeader/>
+                <main className={cx(styles['content-root'])}>
+                    <section className={styles['content-container']}>
+                        {data ? (<>
+                            <BurgerIngredients data={data}/>
+                            <BurgerConstructor data={data}/>
+                        </>) : null}
+                    </section>
+                </main>
+                {error &&
+                    (<ShowErrorModal onClose={handleCloseErrorModal}>
+                        {error}
+                    </ShowErrorModal>)
+                }
+            </div>
+          </BurgerIngridientsContext.Provider>
+      </ErrorContext.Provider>
     );
 }
 
