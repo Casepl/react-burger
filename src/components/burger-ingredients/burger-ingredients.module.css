@@ -1,27 +1,6 @@
-.tile-container {
-    position: relative;
-}
 
-.tile-list-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 32px 24px;
-}
-
-.price-container {
-    display: flex;
-    justify-content: center;
-}
-
-.text-center {
-    text-align: center;
-}
 
 .list {
     overflow: auto;
     max-height: 500px;
-}
-
-.tabs {
-    display: flex;
 }
