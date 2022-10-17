@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import styles from './tile.module.css';
 
 const Tile = (props) => {
-  const {item: {name, image, price}, onTileClick} = props;
+  const {item: {name, image, price}, onTileClick, count} = props;
 
   return (
     <div className={styles['tile-container']} onClick={onTileClick}>
@@ -24,7 +24,7 @@ const Tile = (props) => {
       <div>
         <p className={cx('text text_type_main-default', styles['text-center'])}>{name}</p>
       </div>
-      <Counter count={1} size='default'/>
+      {count && (<Counter count={count} size='default'/>)}
     </div>
   )
 }

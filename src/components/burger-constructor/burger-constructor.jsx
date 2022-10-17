@@ -68,7 +68,7 @@ const BurgerConstructor = () => {
     setIsLoading(true);
 
     sendOrder([elements.bun,
-      elements.constructorElements, elements.bun])
+      ...elements.constructorElements, elements.bun])
       .then((orderId) => {
         setOrderId(orderId);
         setShowOrderDetails(true);
