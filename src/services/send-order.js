@@ -17,7 +17,7 @@ const sendOrder = (ingredients) => {
         throw new Error('Не получается сделать заказ 🥹');
       }
 
-      return json.order.number;
+      return json.order;
     });
 };
 

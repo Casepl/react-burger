@@ -1,4 +1,8 @@
 import cx from 'classnames';
+import { useDrag } from 'react-dnd';
+import { useDispatch } from 'react-redux';
+import { selectIngredient }
+  from '../../services/actions/ingridient-details';
 import {
   Counter,
   CurrencyIcon
@@ -7,11 +11,29 @@ import { ingredientType } from '../../constants/burgers-prop-type';
 import PropTypes from 'prop-types';
 import styles from './tile.module.css';
 
+
 const Tile = (props) => {
-  const {item: {name, image, price}, onTileClick, count} = props;
+  const {item: {name, image, price}, count} = props;
+  const dispatch = useDispatch();
+
+  const [{ opacity }, dragRef] = useDrag({
+    type: 'ingredient',
+    item: { ...props.item },
+    collect: monitor => ({
+      opacity: monitor.isDragging() ? 0.5 : 1
+    })
+  });
+
+  const handleTileClick = () => {
+    dispatch(selectIngredient(props.item));
+  }
 
   return (
-    <div className={styles['tile-container']} onClick={onTileClick}>
+    <div ref={dragRef}
+         draggable
+         className={styles['tile-container']}
+         style={{opacity}}
+         onClick={handleTileClick}>
       <div className='mb-2 pl-4 pr-4'>
         <img src={image} alt={name}/>
       </div>
@@ -32,7 +54,7 @@ const Tile = (props) => {
 
 Tile.propTypes = {
   item: ingredientType.isRequired,
-  onTileClick: PropTypes.func
+  count: PropTypes.number
 }
 
 export default Tile;

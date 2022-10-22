@@ -1,28 +1,29 @@
 import {
   useCallback,
-  useContext,
   useMemo,
-  useState,
   useReducer
 } from 'react';
 import cx from 'classnames';
-import sendOrder from '../../services/send-order';
+import { v4 as uuidv4 } from 'uuid';
+import { useDrop } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import { addComponent, updateConstructorList }
+  from '../../services/actions/burger-constructor';
+import { applyOrder, clearOrder } from '../../services/actions/order';
 import {
-  ConstructorElement,
-  DragIcon,
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import Bun from '../bun/bun';
 import TotalPrice from '../total-price/total-price';
-import {
-  BurgerIngridientsContext,
-  ErrorContext
-} from '../../services/app-context';
+import ConstructorElement
+  from '../constructor-element/constructor-element';
 import styles from './burger-constructor.module.css';
 
 const initialState = { totalPrice: 0 };
+
+const BUN_OFFSET = 1;
 
 function reducer(state, action) {
   switch (action.type) {
@@ -34,12 +35,22 @@ function reducer(state, action) {
 }
 
 const BurgerConstructor = () => {
-  const ingredients = useContext(BurgerIngridientsContext);
-  const { setError } = useContext(ErrorContext);
-  const [isShowOrderDetails, setShowOrderDetails] = useState(false);
-  const [orderId, setOrderId] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, reactDispatch] = useReducer(reducer, initialState);
+
+  const ingredients = useSelector((store) => store.burgerConstructor);
+
+  const isOrderLoading = useSelector((store) => store.order.orderRequest);
+
+  const order = useSelector((store) => store.order.response);
+
+  const dispatch = useDispatch();
+
+  const [, dropTargetRef] = useDrop({
+    accept: 'ingredient',
+    drop(item) {
+      dispatch(addComponent({...item, dragId: uuidv4() }));
+    }
+  });
 
   const elements = useMemo(() => {
     if (!ingredients || !ingredients.length) {
@@ -53,10 +64,10 @@ const BurgerConstructor = () => {
       return acc + element.price;
     }, 0);
 
-    dispatch({
-      type: 'setTotalPrice',
-      payload: bun.price * 2 + constructorElementsSum
-    });
+      reactDispatch({
+        type: 'setTotalPrice',
+        payload: (bun?.price ?? 0) * 2 + constructorElementsSum
+      });
 
     return {
       bun,
@@ -64,56 +75,51 @@ const BurgerConstructor = () => {
     };
   }, [ingredients]);
 
-  const handleOrderClick = useCallback(() => {
-    setIsLoading(true);
 
-    sendOrder([elements.bun,
-      ...elements.constructorElements, elements.bun])
-      .then((orderId) => {
-        setOrderId(orderId);
-        setShowOrderDetails(true);
-      })
-      .catch((e) => {
-        setError(typeof e === 'string' ? e : e.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [elements.bun, elements.constructorElements, setError]);
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
+    const dragCard = ingredients[dragIndex];
+    const newCards = [...ingredients]
+
+    newCards.splice(dragIndex, 1);
+
+    newCards.splice(hoverIndex, 0, dragCard)
+
+    dispatch(updateConstructorList(newCards))
+  }, [ingredients, dispatch]);
+
+  const handleOrderClick = useCallback(() => {
+
+    dispatch(applyOrder([elements.bun,
+      ...elements.constructorElements, elements.bun]))
+  }, [dispatch, elements.bun, elements.constructorElements]);
 
   const handleCloseOrderDetails = useCallback(() => {
-    setShowOrderDetails(false);
-  }, []);
+    dispatch(clearOrder());
+  }, [dispatch]);
 
   return (
-    <div className={cx('pt-25 pl-4 pr-4')}>
+    <div className={cx('pt-25 pl-4 pr-4')}
+         ref={dropTargetRef}>
       <div className={cx(styles['constructor-wrapper'], 'mb-10')}>
-        {elements.bun && (<Bun bun={elements.bun} type="top"/>)}
+        {elements.bun && (<Bun bun={elements.bun} type="top" />)}
         <div
           className={cx(styles.list, styles['constructor-container'], 'custom-scroll')}>
-          {elements?.constructorElements && elements.constructorElements.map((item) => {
+          {elements?.constructorElements && elements.constructorElements.map((item, index) => {
             return (
-              <div key={item._id}
-                   className={styles['constructor-element']}>
-                <div className="mr-2">
-                  <DragIcon type="primary"/>
-                </div>
-                <ConstructorElement
-                  key={item._id}
-                  type={item.type}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image_mobile}
-                />
-              </div>
+              <ConstructorElement
+                key={item.dragId}
+                item={item}
+                index={index + BUN_OFFSET}
+                moveCard={moveCard}
+              />
             );
           })}
         </div>
-        {elements.bun && (<Bun bun={elements.bun} type="bottom"/>)}
+        {elements.bun && (<Bun bun={elements.bun} type="bottom" />)}
       </div>
       <div className={styles['order-container']}>
         <TotalPrice total={state.totalPrice}/>
-        <Button disabled={isLoading}
+        <Button disabled={isOrderLoading}
                 type="primary"
                 size="medium"
                 htmlType="button"
@@ -121,9 +127,9 @@ const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
-      {isShowOrderDetails && (
+      {order && (
         <Modal onClose={handleCloseOrderDetails}>
-          <OrderDetails orderId={orderId}/>
+          <OrderDetails />
         </Modal>)
       }
     </div>
