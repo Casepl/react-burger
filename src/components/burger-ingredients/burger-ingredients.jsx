@@ -1,134 +1,183 @@
-import {useState, useMemo, useCallback} from 'react';
-import PropTypes from 'prop-types';
+import {
+  useMemo,
+  useEffect,
+  useCallback,
+  useRef
+} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getIngredients
+} from '../../services/actions/ingridients';
+import { tabSwitch } from '../../services/actions/tab-switch';
+import { useInView } from 'react-intersection-observer';
+import { deSelectIngredient }
+  from '../../services/actions/ingridient-details';
 import cx from 'classnames';
-import {Tab, CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
+import Tabs from '../tabs/tabs';
+import Group from '../tile-group/tile-group';
 import Modal from '../modal/modal';
-import {ingredientsArrayType, ingredientType} from '../../constants/burgers-prop-type';
+import IngredientDetails
+  from '../ingredient-details/ingridient-details';
 import styles from './burger-ingredients.module.css';
-import IngredientDetails from "../ingredient-details/ingridient-details";
-
-
-const Tabs = () => {
-    const [current, setCurrent] = useState('bun');
-
-    return (
-        <div className={styles.tabs}>
-            <Tab value='bun' active={current === 'bun'} onClick={setCurrent}>
-                Булка
-            </Tab>
-            <Tab value='sauce' active={current === 'sauce'} onClick={setCurrent}>
-                Соус
-            </Tab>
-            <Tab value='main' active={current === 'main'} onClick={setCurrent}>
-                Начинка
-            </Tab>
-        </div>
-    )
-}
-
-const Tile = (props) => {
-    const {item: {name, image, price}, onTileClick} = props;
-
-    return (
-        <div className={styles['tile-container']} onClick={onTileClick}>
-            <div className='mb-2 pl-4 pr-4'>
-                <img src={image} alt={name}/>
-            </div>
-            <div className={cx(styles['price-container'], 'mb-2')}>
-                <div className='mr-2'>
-                    <p className='text text_type_digits-default'>{price}</p>
-                </div>
-                <CurrencyIcon type='primary'/>
-            </div>
-            <div>
-                <p className={cx('text text_type_main-default', styles['text-center'])}>{name}</p>
-            </div>
-            <Counter count={1} size='default'/>
-        </div>
-    )
-}
-
-
-Tile.propTypes = {
-    item: ingredientType.isRequired,
-    onTileClick: PropTypes.func
-}
-
-const Group = (props) => {
-    const {title, list, onTileClick} = props;
-
-    return (
-        <div>
-            <div>
-                <p className='text text_type_main-medium'>{title}</p>
-            </div>
-            <div className={cx(styles['tile-list-container'], 'pt-6', 'pl-4', 'pb-10')}>
-                {list.map((item) => {
-                    return (
-                        <Tile key={item._id} item={item} onTileClick={() => {
-                            onTileClick(item);
-                        }}/>
-                    );
-                })}
-            </div>
-        </div>
-    );
-}
-
-Group.propTypes = {
-    title: PropTypes.string.isRequired,
-    list: ingredientsArrayType.isRequired,
-    onTileClick: PropTypes.func.isRequired
-}
 
 const filterTypes = (type) => (item) => {
-    return item.type === type;
-}
+  return item.type === type;
+};
+
 
 const BurgerIngredients = (props) => {
-    const {data} = props;
-    const [selectedIngredient, setSelectedIngredient] = useState(null);
+  const dispatch = useDispatch();
 
-    const groups = useMemo(() => {
-        const buns = data.filter(filterTypes('bun'));
-        const sause = data.filter(filterTypes('sauce'));
-        const main = data.filter(filterTypes('main'));
+  const bunsRef = useRef();
+  const mainsRef = useRef();
+  const saucesRef = useRef();
 
-        return [{title: 'Булки', list: buns}, {title: 'Cоусы', list: sause}, {title: 'Начинки', list: main}]
-    }, [data]);
+  const {ref: inViewBunRef, inView: inViewBuns} = useInView({
+    threshold: 0,
+  });
 
-    const handleTileClick = useCallback((ingredient) => {
-        setSelectedIngredient(ingredient);
-    }, []);
+  const {ref: inViewSaucesRef, inView: inViewSauces} = useInView({
+    threshold: 0,
+  });
+  const {ref: inViewMainRef, inView: inViewFilling} = useInView({
+    threshold: 0,
+  });
 
-    const handleDetailsClose = useCallback(() => {
-        setSelectedIngredient(null);
-    }, []);
+  const setInViewBunRefRef = useCallback(
+    (node) => {
+      bunsRef.current = node;
+      inViewBunRef(node);
+    },
+    [inViewBunRef],
+  );
+  const setInViewSauseRef = useCallback(
+    (node) => {
+      saucesRef.current = node;
+      inViewSaucesRef(node);
+    },
+    [inViewSaucesRef],
+  );
+  const setInViewMainRef = useCallback(
+    (node) => {
+      mainsRef.current = node;
+      inViewMainRef(node);
+    },
+    [inViewMainRef],
+  );
 
-    return (
-        <div className='pt-10'>
-            <div className='mb-5'>
-                <p className='text text_type_main-large'>Собери бургер</p>
-            </div>
-            <div className='mb-10'>
-                <Tabs/>
-            </div>
-            <div className={styles.list}>
-                {groups.map((group, index) => {
-                    return <Group key={index + group.title} {...group} onTileClick={handleTileClick}/>
-                })}
-            </div>
-            {selectedIngredient && (
-                <Modal header='Детали ингредиента' onClose={handleDetailsClose}>
-                    <IngredientDetails ingredient={selectedIngredient} />
-                </Modal>)
-            }
-        </div>
-    );
-}
+  const inViewRefs  = [setInViewBunRefRef, setInViewSauseRef, setInViewMainRef];
 
-BurgerIngredients.propTypes = {
-    data: ingredientsArrayType.isRequired
-}
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (inViewBuns) {
+      dispatch(tabSwitch('buns'));
+    } else if (inViewSauces) {
+      dispatch(tabSwitch('sauces'));
+    } else if (inViewFilling) {
+      dispatch(tabSwitch('mains'));
+    }
+  }, [dispatch, inViewBuns, inViewFilling, inViewSauces]);
+
+  const { ingredientsRequest, ingredients } =
+    useSelector((store) => store.ingredients);
+  const constructorElements =
+    useSelector((store) => store.burgerConstructor);
+
+  const selectedIngredient =
+    useSelector((store) => store.selectIngredient);
+
+  const counterMap = useMemo(() => {
+    const map = new Map();
+    for(const ingredient of constructorElements) {
+      const id = ingredient._id;
+      if(map.has(id)) {
+        const value = map.get(id);
+        map.set(id, value+1);
+      } else {
+        map.set(id, 1);
+      }
+    }
+
+    return map;
+  }, [constructorElements]);
+
+
+
+  const groups = useMemo(() => {
+    if (ingredientsRequest) {
+      return [{
+        title: 'Булки',
+        list: []
+      }, {
+        title: 'Cоусы',
+        list: []
+      }, {
+        title: 'Начинки',
+        list: []
+      }];
+    }
+
+    const buns = ingredients.filter(filterTypes('bun'));
+    const sause = ingredients.filter(filterTypes('sauce'));
+    const main = ingredients.filter(filterTypes('main'));
+
+    return [{
+      title: 'Булки',
+      list: buns
+    }, {
+      title: 'Cоусы',
+      list: sause
+    }, {
+      title: 'Начинки',
+      list: main
+    }];
+  }, [ingredients, ingredientsRequest ]);
+
+
+  const handleDetailsClose = useCallback(() => {
+    dispatch(deSelectIngredient());
+  }, [dispatch]);
+
+  const handleClickTab = (value) => {
+    if(value === 'bun') {
+      bunsRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (value === 'sauce') {
+      saucesRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (value === 'main') {
+      mainsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+
+
+  return (
+    <div className="pt-10">
+      <div className="mb-5">
+        <p className="text text_type_main-large">Собери бургер</p>
+      </div>
+      <div className="mb-10">
+        <Tabs onClick={handleClickTab} />
+      </div>
+      <div className={cx(styles.list, 'custom-scroll')}>
+        {groups.map((group, index) => {
+          return (<Group
+            counterMap={counterMap}
+            ref={inViewRefs[index]}
+            key={index + group.title} {...group}
+          />);
+        })}
+      </div>
+      {selectedIngredient && (
+        <Modal header="Детали ингредиента"
+               onClose={handleDetailsClose}>
+          <IngredientDetails ingredient={selectedIngredient}/>
+        </Modal>)
+      }
+    </div>
+  );
+};
 
 export default BurgerIngredients;

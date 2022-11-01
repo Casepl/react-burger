@@ -1,72 +1,58 @@
-import {useCallback, useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import cx from 'classnames';
-import checkResponse from '../../utils/checkResponse';
+import { useDispatch } from 'react-redux';
+import { clearError as clearOrderError } from '../../services/actions/order';
+import { clearError as clearIngridientsError } from '../../services/actions/ingridients';
 import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import Modal from '../modal/modal';
-import {BurgersIngridientsURL} from '../../constants/url-list';
+import BurgerIngredients
+  from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor
+  from '../burger-constructor/burger-constructor';
+import ErrorModal from '../error-modal/error-modal';
 import styles from './app.module.css';
 
-const ShowErrorModal = (props) => {
-    const {onClose, children} = props;
 
-    return (
-        <Modal onClose={onClose} header='Не получены данные'>
-            <p className="text text_type_main-medium">
-                {children}
-            </p>
-        </Modal>
-    )
-}
 
-ShowErrorModal.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    children: PropTypes.element
-}
 
 function App() {
-    const [data, setData] = useState([]);
-    const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        fetch(BurgersIngridientsURL)
-            .then(checkResponse)
-            .then((json) => {
-                if (!json.success) {
-                    throw new Error('Ответ от сервера не `success`')
-                }
+  const ingredientsFailed = useSelector((store) =>
+    store.ingredients.ingredientsFailed);
 
-                setData(json.data);
-            }).catch((e) => {
-                setError(e.message);
-            });
+  const orderFailed = useSelector((store) =>
+    store.order.orderFailed);
 
-    }, []);
+  const error = orderFailed && ingredientsFailed;
 
-    const handleCloseErrorModal = useCallback(() => {
-        setError('');
-    }, [])
+  const handleCloseErrorModal = () => {
+    if(ingredientsFailed) {
+      dispatch(clearIngridientsError());
+    } else if (orderFailed) {
+      dispatch(clearOrderError());
+    }
+  }
 
-    return (
-        <div className={styles.root}>
-            <AppHeader/>
-            <main className={cx(styles['content-root'])}>
-                <section className={styles['content-container']}>
-                    {data ? (<>
-                        <BurgerIngredients data={data}/>
-                        <BurgerConstructor data={data}/>
-                    </>) : null}
-                </section>
-            </main>
-            {error &&
-                (<ShowErrorModal onClose={handleCloseErrorModal}>
-                    {error}
-                </ShowErrorModal>)
-            }
-        </div>
-    );
+  return (
+      <div className={styles.root}>
+        <AppHeader/>
+        <main className={cx(styles['content-root'])}>
+          <section className={styles['content-container']}>
+            <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients/>
+              <BurgerConstructor/>
+            </DndProvider>
+          </section>
+        </main>
+        {error &&
+          (<ErrorModal onClose={handleCloseErrorModal}>
+            Что то пошло не так
+          </ErrorModal>)
+        }
+      </div>
+  );
 }
 
 export default App;
