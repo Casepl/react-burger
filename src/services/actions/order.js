@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import sendOrder from '../send-order';
+import { clearConstructor } from './burger-constructor';
 
 export const request = createAction('order/request');
 export const success = createAction('order/success');
@@ -13,6 +14,7 @@ export function applyOrder(ingridients) {
     sendOrder(ingridients)
       .then((order) => {
           dispatch(success(order));
+          dispatch(clearConstructor())
       }).catch(() =>{
         dispatch(error());
       });

@@ -119,7 +119,7 @@ const BurgerConstructor = () => {
       </div>
       <div className={styles['order-container']}>
         <TotalPrice total={state.totalPrice}/>
-        <Button disabled={isOrderLoading}
+        <Button disabled={isOrderLoading || !elements.bun}
                 type="primary"
                 size="medium"
                 htmlType="button"

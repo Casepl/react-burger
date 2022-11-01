@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
-  addComponent,
+  addComponent, clearConstructor,
   removeComponent,
   updateConstructorList
 } from '../actions/burger-constructor';
@@ -32,5 +32,7 @@ export const BurgerConstructorReducer  = createReducer(initialState,
       .addCase(removeComponent, (state, action) => {
         return state.filter((item) =>
           item.dragId !== action.payload.dragId);
-      });
+      }).addCase(clearConstructor, () => {
+        return initialState;
+    })
   })

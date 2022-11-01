@@ -2,6 +2,7 @@ import {
   useMemo,
   useEffect,
   useCallback,
+  useRef
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -27,18 +28,48 @@ const filterTypes = (type) => (item) => {
 const BurgerIngredients = (props) => {
   const dispatch = useDispatch();
 
-  const [bunsRef, inViewBuns] = useInView({
+  const bunsRef = useRef();
+  const mainsRef = useRef();
+  const saucesRef = useRef();
+
+  const {ref: inViewBunRef, inView: inViewBuns} = useInView({
     threshold: 0,
   });
 
-  const [mainsRef, inViewFilling] = useInView({
+  const {ref: inViewSaucesRef, inView: inViewSauces} = useInView({
     threshold: 0,
   });
-  const [saucesRef, inViewSauces] = useInView({
+  const {ref: inViewMainRef, inView: inViewFilling} = useInView({
     threshold: 0,
   });
 
-  const refs  = [bunsRef, saucesRef, mainsRef];
+  const setInViewBunRefRef = useCallback(
+    (node) => {
+      bunsRef.current = node;
+      inViewBunRef(node);
+    },
+    [inViewBunRef],
+  );
+  const setInViewSauseRef = useCallback(
+    (node) => {
+      saucesRef.current = node;
+      inViewSaucesRef(node);
+    },
+    [inViewSaucesRef],
+  );
+  const setInViewMainRef = useCallback(
+    (node) => {
+      mainsRef.current = node;
+      inViewMainRef(node);
+    },
+    [inViewMainRef],
+  );
+
+  const inViewRefs  = [setInViewBunRefRef, setInViewSauseRef, setInViewMainRef];
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   useEffect(() => {
     if (inViewBuns) {
@@ -73,9 +104,7 @@ const BurgerIngredients = (props) => {
     return map;
   }, [constructorElements]);
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
+
 
   const groups = useMemo(() => {
     if (ingredientsRequest) {
@@ -112,19 +141,31 @@ const BurgerIngredients = (props) => {
     dispatch(deSelectIngredient());
   }, [dispatch]);
 
+  const handleClickTab = (value) => {
+    if(value === 'bun') {
+      bunsRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (value === 'sauce') {
+      saucesRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (value === 'main') {
+      mainsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+
+
   return (
     <div className="pt-10">
       <div className="mb-5">
         <p className="text text_type_main-large">Собери бургер</p>
       </div>
       <div className="mb-10">
-        <Tabs />
+        <Tabs onClick={handleClickTab} />
       </div>
       <div className={cx(styles.list, 'custom-scroll')}>
         {groups.map((group, index) => {
           return (<Group
             counterMap={counterMap}
-            ref={refs[index]}
+            ref={inViewRefs[index]}
             key={index + group.title} {...group}
           />);
         })}

@@ -12,8 +12,8 @@ const TileGroup = forwardRef((props, ref) => {
   const {title, list, counterMap} = props;
 
   return (
-    <div ref={ref}>
-      <div>
+    <div>
+      <div ref={ref}>
         <p className='text text_type_main-medium'>{title}</p>
       </div>
       <div className={cx(styles['tile-list-container'], 'pt-6', 'pl-4', 'pb-10')}>
