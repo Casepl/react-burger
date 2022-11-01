@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const Tabs = ({ onClick }) => {
   const currentTab = useSelector((store) => store.currentTab);
-  console.log(currentTab);
+
   return (
     <div className={styles.tabs}>
       <Tab value='bun' active={currentTab === 'buns'} onClick={onClick}>
