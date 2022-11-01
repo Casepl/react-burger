@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import cx from 'classnames';
 import Tile from '../tile/tile';
 import styles
@@ -7,31 +8,31 @@ import {
   ingredientsArrayType
 } from '../../constants/burgers-prop-type';
 
-const TileGroup = (props) => {
-  const {title, list, onTileClick} = props;
+const TileGroup = forwardRef((props, ref) => {
+  const {title, list, counterMap} = props;
 
   return (
     <div>
-      <div>
+      <div ref={ref}>
         <p className='text text_type_main-medium'>{title}</p>
       </div>
       <div className={cx(styles['tile-list-container'], 'pt-6', 'pl-4', 'pb-10')}>
         {list.map((item) => {
+          const count = counterMap.get(item._id);
+
           return (
-            <Tile key={item._id} item={item} onTileClick={() => {
-              onTileClick(item);
-            }}/>
+            <Tile key={item._id} count={count} item={item} />
           );
         })}
       </div>
     </div>
   );
-}
+});
 
 TileGroup.propTypes = {
   title: PropTypes.string.isRequired,
   list: ingredientsArrayType.isRequired,
-  onTileClick: PropTypes.func.isRequired
+  counterMap: PropTypes.instanceOf(Map).isRequired
 }
 
 

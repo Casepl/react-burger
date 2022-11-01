@@ -1,9 +1,11 @@
 import cx from 'classnames';
+import { useSelector } from 'react-redux';
 import orderDoneImg from '../../images/order-done.png';
 import styles from './order-details.module.css';
-import PropTypes from 'prop-types';
 
-const OrderDetails = ({ orderId }) => {
+const OrderDetails = () => {
+  const orderId = useSelector((store) => store.order?.response.number);
+
   return (
     <div className="pb-20">
       <div className="mb-8 mt-4">
@@ -38,10 +40,6 @@ const OrderDetails = ({ orderId }) => {
       </div>
     </div>
   );
-};
-
-OrderDetails.propTypes = {
-  orderId: PropTypes.number.isRequired
 };
 
 export default OrderDetails;
