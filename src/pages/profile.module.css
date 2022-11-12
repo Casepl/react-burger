@@ -1,0 +1,15 @@
+.root {
+    display: grid;
+    justify-content: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    grid-gap: 60px;
+    width: var(--max-content-width);
+}
+
+.text-center {
+    composes: text-center from '../components/common/common.module.css';;
+}

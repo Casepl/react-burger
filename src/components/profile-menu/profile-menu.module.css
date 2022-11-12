@@ -1,0 +1,8 @@
+.link-container {
+    display: grid;
+    height: 64px;
+    align-content: center;
+}
+.link {
+    composes: link from '../common/common.module.css';
+}
