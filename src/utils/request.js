@@ -14,9 +14,14 @@ const request = (url, {
     ...defaultFetchFields,
     ...(method && { method }),
     ...(body && { body }),
+    ...(fetchInitOptions?.headers && {
+      headers: {
+        ...defaultFetchFields.headers,
+        ...fetchInitOptions.headers
+      }
+    }),
     ...(withAuth && {
       headers: {
-        ...(fetchInitOptions?.headers && {...fetchInitOptions.headers}),
         ...defaultFetchFields.headers, ...{
           authorization: getCookie('accessToken')
         }
@@ -24,10 +29,13 @@ const request = (url, {
     })
   };
 
-  if(fetchInitOptions){
+  if (fetchInitOptions) {
     delete fetchInitOptions.headers;
 
-    options= { ...options, fetchInitOptions}
+    options = {
+      ...options,
+      fetchInitOptions
+    };
   }
 
   let fetchRequest = fetch(url, options);
