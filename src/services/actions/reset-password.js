@@ -1,8 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { resetPasswordApi } from '../auth-api';
-import {
-  deleteCookie
-} from '../../utils/cookie';
+import { deleteCookie } from '../../utils/cookie';
 
 export const request = createAction('reset-password/request');
 export const success = createAction('reset-password/success');

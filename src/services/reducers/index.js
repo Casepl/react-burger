@@ -1,26 +1,26 @@
 import { combineReducers } from 'redux';
 import { ingredientsReducer } from './ingridients';
-import { BurgerConstructorReducer } from './burger-constructor';
+import { burgerConstructorReducer } from './burger-constructor';
 import { orderReducer } from './order';
-import { TabSwitchReducer } from './tab-switch';
+import { tabSwitchReducer } from './tab-switch';
 import { forgotPasswordReducer } from './forgot-password';
-import { AuthReducer } from './auth';
-import { LoginReducer } from './login';
-import { RegistrationReducer } from './registration';
-import { ResetPasswordReducer } from './reset-password';
-import { UserReducer } from './user';
-import { LogoutReducer } from './logout';
+import { authReducer } from './auth';
+import { loginReducer } from './login';
+import { registrationReducer } from './registration';
+import { resetPasswordReducer } from './reset-password';
+import { userReducer } from './user';
+import { logoutReducer } from './logout';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
-  burgerConstructor: BurgerConstructorReducer,
+  burgerConstructor: burgerConstructorReducer,
   order: orderReducer,
-  currentTab: TabSwitchReducer,
-  login: LoginReducer,
-  registration: RegistrationReducer,
-  user: UserReducer,
-  auth: AuthReducer,
-  logout: LogoutReducer,
+  currentTab: tabSwitchReducer,
+  login: loginReducer,
+  registration: registrationReducer,
+  user: userReducer,
+  auth: authReducer,
+  logout: logoutReducer,
   forgotPassword: forgotPasswordReducer,
-  resetPassword: ResetPasswordReducer
+  resetPassword: resetPasswordReducer
 });

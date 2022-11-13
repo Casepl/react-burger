@@ -1,32 +1,20 @@
 import cx from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import CFPItem from '../cpf-item/cpf-item';
 import styles from './ingridient-details.module.css';
-import { getIngredients } from '../../services/actions/ingridients';
-import Loader from '../loader/loader';
 
 const IngredientDetails = () => {
   const { ingredientId } = useParams();
-  const dispatch = useDispatch();
 
-  const { ingredientsRequest, ingredients } =
+  const { ingredients } =
     useSelector((store) => store.ingredients);
-
-  useEffect(() => {
-    dispatch(getIngredients())
-  }, [dispatch, ingredientId]);
 
   const { name, image_large, calories, proteins, fat,carbohydrates} =
     useMemo(() => {
       return ingredients?.find((item) => item._id === ingredientId) ?? {};
     }, [ingredientId, ingredients])
-
-  if(ingredientsRequest) {
-    return <Loader />
-  }
-
 
   return (
     <div className="pb-5">

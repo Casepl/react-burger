@@ -5,9 +5,6 @@ import {
   useRef
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getIngredients
-} from '../../services/actions/ingridients';
 import { tabSwitch } from '../../services/actions/tab-switch';
 import { useInView } from 'react-intersection-observer';
 import cx from 'classnames';
@@ -61,10 +58,6 @@ const BurgerIngredients = (props) => {
   );
 
   const inViewRefs  = [setInViewBunRefRef, setInViewSauseRef, setInViewMainRef];
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   useEffect(() => {
     if (inViewBuns) {

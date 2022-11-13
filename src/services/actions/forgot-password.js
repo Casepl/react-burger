@@ -1,10 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 import { forgotPasswordApi } from '../auth-api';
-import { setCookie } from '../../utils/cookie';
+import { setCookie, deleteCookie } from '../../utils/cookie';
 
-export const request = createAction('reset-password/request');
-export const success = createAction('reset-password/success');
-export const error = createAction('reset-password/error');
+export const request = createAction('forgot-password/request');
+export const success = createAction('forgot-password/success');
+export const error = createAction('forgot-password/error');
 
 export function forgotPassword(email) {
   return function (dispatch) {
@@ -12,13 +12,16 @@ export function forgotPassword(email) {
     forgotPasswordApi(email)
       .then((response) => {
         if(response && response.success) {
-          dispatch(success(response.message));
           setCookie('isPasswordReset', true);
+          dispatch(success(response.message));
           return;
         }
+
+        deleteCookie('isPasswordReset');
         dispatch(error('Упс, что то пошло не так'));
-      }).catch((errorMessage) =>{
-      dispatch(error(errorMessage));
+      }).catch((errorMessage) => {
+        deleteCookie('isPasswordReset');
+        dispatch(error(errorMessage));
     });
   };
 }

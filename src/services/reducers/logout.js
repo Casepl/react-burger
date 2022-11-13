@@ -9,7 +9,7 @@ const initialState = {
   logoutRequestFailed: false,
 };
 
-export const LogoutReducer = createReducer(initialState,
+export const logoutReducer = createReducer(initialState,
   (builder) => {
     builder
       .addCase(logoutRequest, (state) => {

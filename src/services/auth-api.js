@@ -1,5 +1,3 @@
-import checkResponse from '../utils/check-response';
-import { getCookie } from '../utils/cookie';
 import {
   FORGOT_PASSWORD_URL,
   LOGIN_URL,
@@ -7,132 +5,75 @@ import {
   RESET_PASSWORD_URL,
   REFRESH_TOKEN_URL, USER_URL, LOGOUT_URL
 } from '../constants/url-list';
+import { request } from '../utils/request';
 
 const forgotPasswordApi = (email) => {
-  return fetch(FORGOT_PASSWORD_URL, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-    'Content-Type': 'application/json'
-  },
-    redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-    body: JSON.stringify({email})
-  })
-    .then(checkResponse);
-}
-
-const loginApi= async form => {
-  return await fetch(LOGIN_URL, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form)
-  }).then(checkResponse);
+  return request(FORGOT_PASSWORD_URL,
+    {
+      withCheckResponse: true,
+      method: 'POST',
+      body: JSON.stringify({ email })
+    });
 };
 
-const loginOutApi= async data => {
-  return await fetch(LOGOUT_URL, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(data)
-  }).then(checkResponse);
+const loginApi = async form => {
+  return await request(LOGIN_URL,
+    {
+      withCheckResponse: true,
+      method: 'POST',
+      body: JSON.stringify(form)
+    });
 };
 
-const resetPasswordApi= async data => {
-  return await fetch(RESET_PASSWORD_URL, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(data)
-  }).then(checkResponse);
+const loginOutApi = async data => {
+  return await request(LOGOUT_URL,
+    {
+      withCheckResponse: true,
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
 };
 
-const registrationApi= async form => {
-  return await fetch(REGISTRATION_URL, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form)
-  }).then(checkResponse);
+const resetPasswordApi = async data => {
+  return await request(RESET_PASSWORD_URL,
+    {
+      withCheckResponse: true,
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
 };
 
+const registrationApi = async form => {
+  return await request(REGISTRATION_URL,
+    {
+      withCheckResponse: true,
+      method: 'POST',
+      body: JSON.stringify(form)
+    });
+};
 
-const getUserApi= () => {
-  return fetch(USER_URL, {
-    method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: getCookie('accessToken')
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer'
-  });
+const getUserApi = () => {
+  return request(USER_URL, { withAuth: true });
 };
 
 const patchUserApi = (form) => {
-  return fetch(USER_URL, {
-    method: 'PATCH',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: getCookie('accessToken')
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form)
-  });
+  return request(USER_URL,
+    {
+      withAuth: true,
+      method: 'PATCH',
+      body: JSON.stringify(form)
+    });
 };
 
-
-const refreshTokenRequest= async (data) => {
+const refreshTokenRequest = async (data) => {
   return await fetch(REFRESH_TOKEN_URL, {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
     body: JSON.stringify(data)
   });
 };
 
-
-export { forgotPasswordApi,
+export {
+  forgotPasswordApi,
   loginApi, getUserApi, registrationApi, resetPasswordApi,
-  refreshTokenRequest, loginOutApi, patchUserApi };
+  refreshTokenRequest, loginOutApi, patchUserApi
+};

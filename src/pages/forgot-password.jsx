@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { forgotPassword } from '../services/actions/forgot-password';
 import cx from 'classnames';
 import {
@@ -20,12 +21,14 @@ const ForgotPassword = () => {
   const {
     forgotPasswordRequest,
     errorMessage,
-    message
+    message,
+    isPasswordReset
   } = useSelector((store) => {
     return {
       resetPasswordRequest: store.forgotPassword.forgotPasswordRequest,
       errorMessage: store.forgotPassword.errorMessage,
-      message: store.forgotPassword.message
+      message: store.forgotPassword.message,
+      isPasswordReset: store.forgotPassword.isPasswordReset
     };
   });
 
@@ -44,7 +47,9 @@ const ForgotPassword = () => {
     );
   }
 
-
+  if(isPasswordReset) {
+    return (<Navigate to='/reset-password' replace />)
+  }
 
   return (
     <div className={styles.root}>
@@ -80,10 +85,10 @@ const ForgotPassword = () => {
         <p
           className="text text_type_main-default text_color_inactive">
           Вспомнили пароль? {' '}
-          <a className={
+          <Link className={
             cx('text text_type_main-default text_color_accent',
               styles.link)}
-             href="/login">Войти</a>
+             to='/login'>Войти</Link>
         </p>
       </div>
     </div>

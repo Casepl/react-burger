@@ -1,17 +1,14 @@
 import { ORDERS_URL } from '../constants/url-list';
-import checkResponse from '../utils/check-response';
+import { request } from '../utils/request';
 
 const sendOrder = (ingredients) => {
   const ids = ingredients.map(({ _id }) => _id);
 
-  return fetch(ORDERS_URL, {
+  return request(ORDERS_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ ingredients: ids })
+    body: JSON.stringify({ ingredients: ids }),
+    withCheckResponse: true
   })
-    .then(checkResponse)
     .then((json) => {
       if (!json.success) {
         throw new Error('Не получается сделать заказ 🥹');

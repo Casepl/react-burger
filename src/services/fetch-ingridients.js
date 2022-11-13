@@ -1,9 +1,8 @@
-import checkResponse from '../utils/check-response';
 import { INGREDIENTS_URL } from '../constants/url-list';
+import { request } from '../utils/request';
 
 const fetchIngredients = () => {
-  return fetch(INGREDIENTS_URL)
-    .then(checkResponse);
-}
+  return request(INGREDIENTS_URL, { withCheckResponse: true });
+};
 
 export default fetchIngredients;

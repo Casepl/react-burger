@@ -22,17 +22,20 @@ import Modal from '../modal/modal';
 const ModalRoutes = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  let background = location.state && location.state.background;
+  const background = location.state && location.state.background;
 
   const handleRouteModalClose = () => {
     navigate(-1);
   };
 
   const userRequest = useSelector((store) => store.user.userRequest);
+  const { ingredientsRequest } =
+    useSelector((store) => store.ingredients);
+
   return (
     <>
       <AppHeader/>
-      {userRequest ? (<Loader/>) :
+      {userRequest || ingredientsRequest ? (<Loader/>) :
         (<Routes location={background || location}>
           <Route path="/login" element={<LoginPage/>}/>
           <Route path="/registration"
@@ -59,14 +62,14 @@ const ModalRoutes = () => {
         </Routes>)}
       {background && (
         <Routes>
-        <Route
-          path='/ingredients/:ingredientId'
-          element={
-            <Modal onClose={handleRouteModalClose}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
+          <Route
+            path='/ingredients/:ingredientId'
+            element={
+              <Modal onClose={handleRouteModalClose}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
         </Routes>
       )}
     </>

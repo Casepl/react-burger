@@ -19,7 +19,7 @@ const initialState = {
   patchUserMessage: '',
 };
 
-export const UserReducer = createReducer(initialState,
+export const userReducer = createReducer(initialState,
   (builder) => {
     builder
       .addCase(userRequest, (state) => {

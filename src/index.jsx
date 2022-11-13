@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { rootReducer } from './services/reducers';
 import thunk from 'redux-thunk';
 import { getUser } from './services/actions/user';
+import { getIngredients } from './services/actions/ingridients';
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -19,6 +20,7 @@ const enhancer = composeEnhancers(applyMiddleware(thunk));
 const store = createStore(rootReducer, enhancer);
 
 store.dispatch(getUser());
+store.dispatch(getIngredients());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')

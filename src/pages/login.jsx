@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import cx from 'classnames';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../services/actions/login';
+import { useForm } from '../hooks/useForm';
 import {
   EmailInput, PasswordInput, Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
-import { login } from '../services/actions/login';
+
 
 const Login = () => {
   const {
@@ -19,20 +21,14 @@ const Login = () => {
       user: store.auth.user
     };
   });
-  const { state } = useLocation();
 
+  const { state } = useLocation();
   const dispatch = useDispatch();
-  const [form, setValue] = useState({
+
+  const [form, handleChange] = useForm({
     email: '',
     password: ''
   });
-
-  const onChange = e => {
-    setValue({
-      ...form,
-      [e.target.name]: e.target.value
-    });
-  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -57,10 +53,10 @@ const Login = () => {
         </legend>
         <EmailInput
           extraClass={'mb-6'}
-          onChange={onChange} value={form.email} name={'email'}/>
+          onChange={handleChange} value={form.email} name={'email'}/>
         <PasswordInput
           extraClass={'mb-6'}
-          onChange={onChange} value={form.password}
+          onChange={handleChange} value={form.password}
           name={'password'}/>
         <div className={styles['button-wrapper']}>
           <Button htmlType="submit"
@@ -93,7 +89,7 @@ const Login = () => {
           <Link className={
             cx('text text_type_main-default text_color_accent',
               styles.link)}
-                to="/forgot-password">Восстановить пароль</Link>
+                to='/forgot-password'>Восстановить пароль</Link>
         </p>
       </div>
     </div>

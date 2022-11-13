@@ -10,7 +10,7 @@ const initialState = {
   errorMessage: ''
 };
 
-export const RegistrationReducer = createReducer(initialState,
+export const registrationReducer = createReducer(initialState,
   (builder) => {
     builder
       .addCase(registrationRequest, (state) => {

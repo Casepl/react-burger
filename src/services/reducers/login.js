@@ -10,7 +10,7 @@ const initialState = {
   errorMessage: '',
 };
 
-export const LoginReducer = createReducer(initialState,
+export const loginReducer = createReducer(initialState,
   (builder) => {
     builder
       .addCase(loginRequest, (state) => {

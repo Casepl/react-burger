@@ -10,7 +10,7 @@ export const clearError = createAction('ingredients/clearError');
 
 export function applyOrder(ingridients) {
   return function (dispatch) {
-    dispatch(request);
+    dispatch(request());
     sendOrder(ingridients)
       .then((order) => {
           dispatch(success(order));

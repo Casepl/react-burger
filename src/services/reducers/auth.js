@@ -8,7 +8,7 @@ const initialState = {
   user: null
 };
 
-export const AuthReducer = createReducer(initialState,
+export const authReducer = createReducer(initialState,
   (builder) => {
     builder
       .addCase(setUser, (state, action) => {

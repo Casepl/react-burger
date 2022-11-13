@@ -27,7 +27,7 @@ export function getUser() {
       })
       .catch((error)=>{
         if(error.message === 'jwt expired') {
-          dispatch(refreshToken(getUser()));
+          dispatch(refreshToken(getUser(), userFail('Упс, что то пошло не так')));
         } else {
           dispatch(userFail(error.message));
         }
@@ -50,7 +50,7 @@ export function patchUser(form) {
       })
       .catch((error)=>{
         if(error.message === 'jwt expired') {
-          dispatch(refreshToken(getUser()));
+          dispatch(refreshToken(getUser(), userPatchFail('Упс, что то пошло не так')));
         } else {
           dispatch(userPatchFail(error.message));
         }

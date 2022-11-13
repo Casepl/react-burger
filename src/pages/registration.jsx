@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import cx from 'classnames';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from '../hooks/useForm';
 import { registration } from '../services/actions/registration';
 import {
   Input, EmailInput, PasswordInput, Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './registration.module.css';
+
 
 const Registration = () => {
   const {
@@ -21,18 +23,11 @@ const Registration = () => {
   });
   const dispatch = useDispatch();
 
-  const [form, setValue] = useState({
+  const [form, handleChange] = useForm({
     name: '',
     email: '',
     password: ''
   });
-
-  const onChange = e => {
-    setValue({
-      ...form,
-      [e.target.name]: e.target.value
-    });
-  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -56,14 +51,14 @@ const Registration = () => {
         </legend>
         <Input
           extraClass={'mb-6'}
-          onChange={onChange} value={form.name} placeholder={'Имя'}
+          onChange={handleChange} value={form.name} placeholder={'Имя'}
           name={'name'}/>
         <EmailInput
           extraClass={'mb-6'}
-          onChange={onChange} value={form.email} name={'email'}/>
+          onChange={handleChange} value={form.email} name={'email'}/>
         <PasswordInput
           extraClass={'mb-6'}
-          onChange={onChange} value={form.password}
+          onChange={handleChange} value={form.password}
           name={'password'}/>
         <div className={styles['button-wrapper']}>
           <Button
@@ -84,10 +79,10 @@ const Registration = () => {
         <p
           className="text text_type_main-default text_color_inactive">
           Уже зарегистрированы? {' '}
-          <a className={
+          <Link className={
             cx('text text_type_main-default text_color_accent',
               styles.link)}
-             href="/login">Войти</a>
+             to='/login'>Войти</Link>
         </p>
       </div>
     </div>

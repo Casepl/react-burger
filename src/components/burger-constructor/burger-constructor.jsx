@@ -7,6 +7,7 @@ import cx from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { addComponent, updateConstructorList }
   from '../../services/actions/burger-constructor';
 import { applyOrder, clearOrder } from '../../services/actions/order';
@@ -29,6 +30,8 @@ function reducer(state, action) {
   switch (action.type) {
     case 'setTotalPrice':
       return { totalPrice: action.payload };
+    case 'resetTotalPrice':
+      return initialState;
     default:
       throw new Error(`Wrong type of action: ${action.type}`);
   }
@@ -36,6 +39,9 @@ function reducer(state, action) {
 
 const BurgerConstructor = () => {
   const [state, reactDispatch] = useReducer(reducer, initialState);
+  const navigate = useNavigate();
+
+  const { user } = useSelector((store) => store.auth);
 
   const ingredients = useSelector((store) => store.burgerConstructor);
 
@@ -48,7 +54,10 @@ const BurgerConstructor = () => {
   const [, dropTargetRef] = useDrop({
     accept: 'ingredient',
     drop(item) {
-      dispatch(addComponent({...item, dragId: uuidv4() }));
+      dispatch(addComponent({
+        ...item,
+        dragId: uuidv4()
+      }));
     }
   });
 
@@ -64,10 +73,10 @@ const BurgerConstructor = () => {
       return acc + element.price;
     }, 0);
 
-      reactDispatch({
-        type: 'setTotalPrice',
-        payload: (bun?.price ?? 0) * 2 + constructorElementsSum
-      });
+    reactDispatch({
+      type: 'setTotalPrice',
+      payload: (bun?.price ?? 0) * 2 + constructorElementsSum
+    });
 
     return {
       bun,
@@ -75,25 +84,34 @@ const BurgerConstructor = () => {
     };
   }, [ingredients]);
 
-
   const moveCard = useCallback((dragIndex, hoverIndex) => {
     const dragCard = ingredients[dragIndex];
-    const newCards = [...ingredients]
+    const newCards = [...ingredients];
 
     newCards.splice(dragIndex, 1);
 
-    newCards.splice(hoverIndex, 0, dragCard)
+    newCards.splice(hoverIndex, 0, dragCard);
 
-    dispatch(updateConstructorList(newCards))
+    dispatch(updateConstructorList(newCards));
   }, [ingredients, dispatch]);
 
   const handleOrderClick = useCallback(() => {
+    if (!user) {
+      navigate('/login', { state: { redirectTo: '/' } });
+      return;
+    }
 
     dispatch(applyOrder([elements.bun,
-      ...elements.constructorElements, elements.bun]))
-  }, [dispatch, elements.bun, elements.constructorElements]);
+      ...elements.constructorElements, elements.bun]));
+  }, [user, navigate, dispatch,
+    elements.bun, elements.constructorElements]);
 
   const handleCloseOrderDetails = useCallback(() => {
+
+    reactDispatch({
+      type: 'resetTotalPrice',
+    });
+
     dispatch(clearOrder());
   }, [dispatch]);
 
@@ -101,7 +119,7 @@ const BurgerConstructor = () => {
     <div className={cx('pt-25 pl-4 pr-4')}
          ref={dropTargetRef}>
       <div className={cx(styles['constructor-wrapper'], 'mb-10')}>
-        {elements.bun && (<Bun bun={elements.bun} type="top" />)}
+        {elements.bun && (<Bun bun={elements.bun} type="top"/>)}
         <div
           className={cx(styles.list, styles['constructor-container'], 'custom-scroll')}>
           {elements?.constructorElements && elements.constructorElements.map((item, index) => {
@@ -115,7 +133,7 @@ const BurgerConstructor = () => {
             );
           })}
         </div>
-        {elements.bun && (<Bun bun={elements.bun} type="bottom" />)}
+        {elements.bun && (<Bun bun={elements.bun} type="bottom"/>)}
       </div>
       <div className={styles['order-container']}>
         <TotalPrice total={state.totalPrice}/>
@@ -129,7 +147,7 @@ const BurgerConstructor = () => {
       </div>
       {order && (
         <Modal onClose={handleCloseOrderDetails}>
-          <OrderDetails />
+          <OrderDetails/>
         </Modal>)
       }
     </div>

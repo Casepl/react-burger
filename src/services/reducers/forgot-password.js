@@ -5,6 +5,7 @@ const initialState = {
   forgotPasswordFailed: false,
   message: '',
   errorMessage: '',
+  isPasswordReset: false,
   forgotPasswordRequest: false
 }
 
@@ -16,10 +17,10 @@ export const forgotPasswordReducer  = createReducer(initialState,
       })
       .addCase(success, (state, action) => {
         return { ...state,  forgotPasswordFailed: false,
-          message: action.payload, forgotPasswordRequest: false, errorMessage: ''};
+          message: action.payload, forgotPasswordRequest: false, errorMessage: '', isPasswordReset: true };
       })
       .addCase(error, (state, action) => {
         return { ...state, forgotPasswordFailed: true,
-          errorMessage: action.payload, message: '', forgotPasswordRequest: false };
+          errorMessage: action.payload, message: '', forgotPasswordRequest: false, isPasswordReset: false };
       });
   });

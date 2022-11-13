@@ -5,10 +5,11 @@ const initialState = {
   resetPasswordFailed: false,
   message: '',
   errorMessage: '',
+  isPasswordResetSuccess: false,
   resetPasswordRequest: false
 }
 
-export const ResetPasswordReducer  = createReducer(initialState,
+export const resetPasswordReducer  = createReducer(initialState,
   (builder) => {
     builder
       .addCase(request, (state) => {
@@ -16,10 +17,13 @@ export const ResetPasswordReducer  = createReducer(initialState,
       })
       .addCase(success, (state, action) => {
         return { ...state,  resetPasswordFailed: false,
-          message: action.payload, resetPasswordRequest: false, errorMessage: ''};
+          message: action.payload, resetPasswordRequest: false,
+          errorMessage: '', isPasswordResetSuccess: true };
       })
       .addCase(error, (state, action) => {
         return { ...state, resetPasswordRequest: true,
-          errorMessage: action.payload, message: '', resetPasswordFailed: false };
+          isPasswordResetSuccess: false,
+          errorMessage: action.payload, message: '',
+          resetPasswordFailed: false };
       });
   });

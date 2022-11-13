@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import { matchPath, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Logo,
   BurgerIcon,
@@ -39,7 +40,7 @@ function AppHeader() {
             );
           })}
         </div>
-        <Logo/>
+        <Link to='/'><Logo/></Link>
         <div className={style.login}>
           <HeaderBlock Icon={ProfileIcon} to='/profile' title="Личный кабинет"
                        isActive={!!matchPath(pathname, '/profile')}
