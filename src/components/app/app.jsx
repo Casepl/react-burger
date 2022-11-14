@@ -6,12 +6,14 @@ import {
   clearError as clearOrderError
 } from '../../services/actions/order';
 import {
-  clearError as clearIngridientsError
+  clearError as clearIngridientsError, getIngredients
 } from '../../services/actions/ingridients';
 import { clearLogoutError } from '../../services/actions/logout';
 import ErrorModal from '../error-modal/error-modal';
 import styles from './app.module.css';
 import ModalRoutes from '../modal-routes/modal-routes';
+import { useEffect } from 'react';
+import { getUser } from '../../services/actions/user';
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +39,11 @@ function App() {
       dispatch(clearLogoutError());
     }
   };
+
+  useEffect(() => {
+    dispatch(getUser());
+    dispatch(getIngredients());
+  }, [dispatch])
 
 
   return (

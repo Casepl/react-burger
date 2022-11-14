@@ -65,7 +65,7 @@ const ModalRoutes = () => {
           <Route
             path='/ingredients/:ingredientId'
             element={
-              <Modal onClose={handleRouteModalClose}>
+              <Modal header='Детали ингредиента' onClose={handleRouteModalClose}>
                 <IngredientDetails />
               </Modal>
             }
