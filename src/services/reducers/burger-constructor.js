@@ -7,7 +7,7 @@ import {
 
 const initialState = []
 
-export const BurgerConstructorReducer  = createReducer(initialState,
+export const burgerConstructorReducer  = createReducer(initialState,
   (builder) => {
     builder
       .addCase(addComponent, (state, action) => {

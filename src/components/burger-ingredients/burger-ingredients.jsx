@@ -5,19 +5,11 @@ import {
   useRef
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getIngredients
-} from '../../services/actions/ingridients';
 import { tabSwitch } from '../../services/actions/tab-switch';
 import { useInView } from 'react-intersection-observer';
-import { deSelectIngredient }
-  from '../../services/actions/ingridient-details';
 import cx from 'classnames';
 import Tabs from '../tabs/tabs';
 import Group from '../tile-group/tile-group';
-import Modal from '../modal/modal';
-import IngredientDetails
-  from '../ingredient-details/ingridient-details';
 import styles from './burger-ingredients.module.css';
 
 const filterTypes = (type) => (item) => {
@@ -68,10 +60,6 @@ const BurgerIngredients = (props) => {
   const inViewRefs  = [setInViewBunRefRef, setInViewSauseRef, setInViewMainRef];
 
   useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (inViewBuns) {
       dispatch(tabSwitch('buns'));
     } else if (inViewSauces) {
@@ -85,9 +73,6 @@ const BurgerIngredients = (props) => {
     useSelector((store) => store.ingredients);
   const constructorElements =
     useSelector((store) => store.burgerConstructor);
-
-  const selectedIngredient =
-    useSelector((store) => store.selectIngredient);
 
   const counterMap = useMemo(() => {
     const map = new Map();
@@ -136,11 +121,6 @@ const BurgerIngredients = (props) => {
     }];
   }, [ingredients, ingredientsRequest ]);
 
-
-  const handleDetailsClose = useCallback(() => {
-    dispatch(deSelectIngredient());
-  }, [dispatch]);
-
   const handleClickTab = (value) => {
     if(value === 'bun') {
       bunsRef.current.scrollIntoView({ behavior: "smooth" });
@@ -170,12 +150,6 @@ const BurgerIngredients = (props) => {
           />);
         })}
       </div>
-      {selectedIngredient && (
-        <Modal header="Детали ингредиента"
-               onClose={handleDetailsClose}>
-          <IngredientDetails ingredient={selectedIngredient}/>
-        </Modal>)
-      }
     </div>
   );
 };

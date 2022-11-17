@@ -14,9 +14,9 @@ const ModalHeader = (props) => {
 
     return (
         <div className={styles['header-root']}>
-            <div>
+           <div>
                 {children}
-            </div>
+           </div>
             <div>
                 <Button extraClass={styles['reset-button-padding']} type="secondary" size="small" htmlType='button' onClick={onClose}>
                     <CloseIcon type='primary' />
@@ -52,7 +52,7 @@ const Modal = (props) => {
             <ModalOverlay onClose={onClose} />
             <div className={cx(styles['modal-content'], 'p-10')}>
                  <ModalHeader onClose={onClose}>
-                     <p className="text text_type_main-medium">{header}</p>
+                     <p className="text text_type_main-large">{header}</p>
                  </ModalHeader>
                  {children}
             </div>

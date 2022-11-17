@@ -1,4 +1,6 @@
 import cx from 'classnames';
+import { matchPath, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Logo,
   BurgerIcon,
@@ -8,19 +10,24 @@ import {
 import HeaderBlock from '../header-block/header-block';
 import style from './app-header.module.css';
 
+
 const menu = [
   {
     Icon: BurgerIcon,
     title: 'Конструктор',
+    to: '/',
     isActive: true
   },
   {
     Icon: ListIcon,
+    to: '/profile/orders',
     title: 'Лента заказов'
   }
 ];
 
 function AppHeader() {
+  const { pathname } =  useLocation();
+
   return (
     <header className={cx('pt-4 pb-4', style['header-root'])}>
       <div className={style['header-container']}>
@@ -28,13 +35,15 @@ function AppHeader() {
           {menu.map((item, index) => {
             return (
               <HeaderBlock key={index + item.title} {...item}
+                           isActive={!!matchPath(pathname, item.to)}
                            isLast={index === menu.length - 1}/>
             );
           })}
         </div>
-        <Logo/>
+        <Link to='/'><Logo/></Link>
         <div className={style.login}>
-          <HeaderBlock Icon={ProfileIcon} title="Личный кабинет"
+          <HeaderBlock Icon={ProfileIcon} to='/profile' title="Личный кабинет"
+                       isActive={!!matchPath(pathname, '/profile')}
                        isLast={true}/>
         </div>
       </div>

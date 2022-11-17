@@ -3,7 +3,7 @@ import { tabSwitch } from '../actions/tab-switch';
 
 const initialState = 'bun'
 
-export const TabSwitchReducer  = createReducer(initialState,
+export const tabSwitchReducer  = createReducer(initialState,
   (builder) => {
     builder
       .addCase(tabSwitch, (state, action) => {
