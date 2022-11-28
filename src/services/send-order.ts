@@ -1,13 +1,12 @@
 import { ORDERS_URL } from '../constants/url-list';
 import { ingredientsArrayType } from "../constants/burgers-prop-type";
-import {TResponseBody} from "./types/request";
 import {IOrderResponse} from "./types/data";
 import {requestWithCheckResponse} from "../utils/request-with-check-response";
 
 const sendOrder = (ingredients: ingredientsArrayType) => {
   const ids = ingredients.map(({ _id }) => _id);
 
-  return requestWithCheckResponse<TResponseBody<IOrderResponse>>(ORDERS_URL, {
+  return requestWithCheckResponse<IOrderResponse>(ORDERS_URL, {
     method: 'POST',
     body: JSON.stringify({ ingredients: ids }),
     withCheckResponse: true

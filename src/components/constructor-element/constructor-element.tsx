@@ -13,6 +13,7 @@ import type {
   ConstructorElementProps
 } from '../../constants/burgers-prop-type';
 
+import type { Identifier } from "dnd-core";
 
 interface ElementProps {
   item: ConstructorElementProps
@@ -20,11 +21,12 @@ interface ElementProps {
   moveCard: (dragIndex: number, hoverIndex: number) => void
 }
 
+
 const Element = ({ item, index, moveCard }: ElementProps ) => {
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop<{index: number}, unknown, {handlerId: Identifier | null}>({
     accept: 'component',
     collect(monitor) {
       return {
@@ -32,7 +34,7 @@ const Element = ({ item, index, moveCard }: ElementProps ) => {
       }
     },
 
-    hover(dragItem: any, monitor) {
+    hover(dragItem, monitor) {
       if (!ref.current) {
         return;
       }
