@@ -6,7 +6,8 @@ import {
 import cx from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from "../../hooks/useDispatch";
+import { useSelector } from "../../hooks/useSelector";
 import { useNavigate } from 'react-router-dom';
 import { addComponent, updateConstructorList }
   from '../../services/actions/burger-constructor';
@@ -23,7 +24,6 @@ import ConstructorElement
 import styles from './burger-constructor.module.css';
 import {
   ConstructorElementArrayType,
-  ConstructorElementProps,
   ingredientsArrayType
 } from "../../constants/burgers-prop-type";
 
@@ -62,13 +62,13 @@ const BurgerConstructor = () => {
   const [state, reactDispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
-  const { user } = useSelector((store: any) => store.auth);
+  const { user } = useSelector((store) => store.auth);
 
-  const ingredients: ingredientsArrayType = useSelector((store: any) => store.burgerConstructor);
+  const ingredients: ingredientsArrayType = useSelector((store) => store.burgerConstructor);
 
-  const isOrderLoading = useSelector((store: any) => store.order.orderRequest);
+  const isOrderLoading = useSelector((store) => store.order.orderRequest);
 
-  const order = useSelector((store: any) => store.order.response);
+  const order = useSelector((store) => store.order.response);
 
   const dispatch = useDispatch();
 
@@ -124,10 +124,10 @@ const BurgerConstructor = () => {
       navigate('/login', { state: { redirectTo: '/' } });
       return;
     }
-
-    // @ts-ignore
-    dispatch(applyOrder([elements.bun,
-    ...(elements.constructorElements || []), elements.bun]));
+    debugger;
+    const ingridients = [elements.bun,
+      ...(elements.constructorElements || []), elements.bun] as ConstructorElementArrayType;
+    dispatch(applyOrder(ingridients));
   }, [user, navigate, dispatch,
     elements.bun, elements.constructorElements]);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/useSelector';
 
 interface IProtectedRouteProps {
   children: JSX.Element
@@ -9,7 +9,7 @@ interface IProtectedRouteProps {
 export function ProtectedRoute({ children }: IProtectedRouteProps) {
   const { pathname } = useLocation();
 
-  const { user } = useSelector((store: any) => {
+  const { user } = useSelector((store) => {
     return store.auth;
   });
 

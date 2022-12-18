@@ -10,11 +10,10 @@ import {
 import styles from './reset-password.module.css';
 import { useForm } from '../hooks/useForm';
 
+import type {IResetPasswordForm} from "../services/types/data";
 
-interface IResetPasswordForm {
-  token: string,
-  password: string
-}
+
+
 
 const ResetPassword = () => {
   const [form, handleChange] = useForm<IResetPasswordForm>({

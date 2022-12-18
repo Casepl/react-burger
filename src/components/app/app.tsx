@@ -1,7 +1,8 @@
 import {
   BrowserRouter as Router
 } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector} from "../../hooks/useSelector";
+import { useDispatch } from "../../hooks/useDispatch";
 import {
   clearError as clearOrderError
 } from '../../services/actions/order';
@@ -18,13 +19,13 @@ import { getUser } from '../../services/actions/user';
 function App() {
   const dispatch = useDispatch();
 
-  const ingredientsFailed = useSelector((store: any) =>
+  const ingredientsFailed = useSelector((store) =>
     store.ingredients.ingredientsFailed);
 
-  const orderFailed = useSelector((store: any) =>
+  const orderFailed = useSelector((store) =>
     store.order.orderFailed);
 
-  const logoutFail = useSelector((store: any) => {
+  const logoutFail = useSelector((store) => {
     return store.logout.logoutRequestFailed;
   });
 
@@ -41,8 +42,8 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(getUser() as any);
-    dispatch(getIngredients() as any);
+    dispatch(getUser());
+    dispatch(getIngredients());
   }, [dispatch])
 
 

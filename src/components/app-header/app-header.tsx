@@ -20,7 +20,7 @@ const menu = [
   },
   {
     Icon: ListIcon,
-    to: '/profile/orders',
+    to: '/feed',
     title: 'Лента заказов'
   }
 ];

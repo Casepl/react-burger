@@ -1,0 +1,4 @@
+.column-wrapper {
+    display: grid;
+    grid-column-gap: 10px;
+}

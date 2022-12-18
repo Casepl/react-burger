@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/useSelector';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import CFPItem from '../cpf-item/cpf-item';
@@ -10,9 +10,9 @@ const IngredientDetails = () => {
   const { ingredientId } = useParams();
 
   const { ingredients }: { ingredients: IIngredientProps[]} =
-    useSelector((store: any) => store.ingredients);
+    useSelector((store) => store.ingredients);
 
-  const { name, image_large, calories, proteins, fat,carbohydrates} =
+  const { name, image_large, calories, proteins, fat, carbohydrates} =
     useMemo(() => {
       return ingredients?.find((item) => item._id === ingredientId) ?? {
           name: '', image_large: '', calories: 0, proteins: 0, fat: 0,carbohydrates: 0
