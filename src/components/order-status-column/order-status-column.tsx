@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react';
-import { v4 } from 'uuid';
 import cx from 'classnames';
 import style from './order-status-column.module.css';
 
@@ -24,7 +23,7 @@ const OrderStatusColumn = ({orders = [], color='accent', head}: IOrderStatusProp
             <div className={style['column-wrapper']}
                  style={{gridTemplateColumns: `repeat(${columnsNumber > MAX_COLUMNS ? MAX_COLUMNS : columnsNumber}, min-content)`}}>
                 {orders.map((number) => {
-                    return (<p key={v4()} className={cx('text text_type_digits-default', `text_color_${color}`)}>{number}</p>)
+                    return (<p key={number} className={cx('text text_type_digits-default', `text_color_${color}`)}>{number}</p>)
                 })}
             </div>
         </div>
