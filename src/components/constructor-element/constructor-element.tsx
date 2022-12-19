@@ -83,7 +83,6 @@ const Element = ({ item, index, moveCard }: ElementProps ) => {
   drag(drop(ref));
 
   const handleDeleteClick = useCallback(() =>{
-    // @ts-ignore
     dispatch(removeComponent({ dragId: item.dragId }));
   }, [dispatch, item.dragId]);
 

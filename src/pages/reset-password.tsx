@@ -1,6 +1,8 @@
 import React, {SyntheticEvent} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from '../hooks/useDispatch';
+import { useSelector } from '../hooks/useSelector';
 import { Link, Navigate } from 'react-router-dom';
+import { useForm } from '../hooks/useForm';
 import { getCookie } from '../utils/cookie';
 import { resetPassword } from '../services/actions/reset-password';
 import cx from 'classnames';
@@ -8,7 +10,7 @@ import {
   Input, PasswordInput, Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './reset-password.module.css';
-import { useForm } from '../hooks/useForm';
+
 
 import type {IResetPasswordForm} from "../services/types/data";
 
@@ -40,7 +42,7 @@ const ResetPassword = () => {
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
+
     dispatch(resetPassword(form));
   };
 

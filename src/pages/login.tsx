@@ -1,7 +1,8 @@
 import React, { SyntheticEvent }from 'react';
 import cx from 'classnames';
 import { Link, Navigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from '../hooks/useDispatch';
+import { useSelector } from '../hooks/useSelector';
 import { login } from '../services/actions/login';
 import { useForm } from '../hooks/useForm';
 import {
@@ -36,7 +37,7 @@ const Login = () => {
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
+
     dispatch(login(form));
   };
 

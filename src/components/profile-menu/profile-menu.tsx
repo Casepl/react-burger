@@ -29,6 +29,7 @@ const ProfileMenu = () => {
 
   }, []);
 
+
   return (
     <nav>
       {routes.map((r, i) => {
@@ -38,7 +39,7 @@ const ProfileMenu = () => {
               className={
                 cx('text text_type_main-medium',
                   styles.link,
-                  !!matchPath(pathname, r.route) ? 'text_color_primary' : 'text_color_inactive')}
+                  !!matchPath({path: r.route}, pathname) ? 'text_color_primary' : 'text_color_inactive')}
               to={r.route}>{r.name}</Link>
           </li>
         );

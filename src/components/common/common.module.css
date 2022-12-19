@@ -1,22 +1,18 @@
 .link:link {
-    color: var(--text-primary-color);
     text-decoration: none;
 }
 
 .link:visited {
-    color: var(--text-primary-color);
     text-decoration: none;
 }
 
 
 .link:hover {
-    color: var(--text-primary-color);
     text-decoration: none;
 }
 
 
 .link:active {
-    color: var(--text-primary-color);
     text-decoration: none;
 }
 

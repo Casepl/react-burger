@@ -35,7 +35,9 @@ export const socketMiddleware = (wsActions: TSocketConstantActions): Middleware 
                     dispatch({ type: onClose, payload: event });
                 };
                 if(wsClose && type === wsClose) {
-                    socket.close();
+                    if (socket.readyState === 1) {
+                        socket.close();
+                    }
                 }
             }
 

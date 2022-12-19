@@ -64,13 +64,13 @@ const BurgerIngredients = () => {
 
   useEffect(() => {
     if (inViewBuns) {
-      // @ts-ignore
+
       dispatch(tabSwitch('buns'));
     } else if (inViewSauces) {
-      // @ts-ignore
+
       dispatch(tabSwitch('sauces'));
     } else if (inViewFilling) {
-      // @ts-ignore
+
       dispatch(tabSwitch('mains'));
     }
   }, [dispatch, inViewBuns, inViewFilling, inViewSauces]);

@@ -29,7 +29,8 @@ const loginOutApi = async (data: { refreshToken: string | null}) => {
   return await requestWithCheckResponse(LOGOUT_URL,
     {
       method: 'POST',
-      body: JSON.stringify(data)
+      withAuth: true,
+      body: JSON.stringify({token: data.refreshToken})
     });
 };
 

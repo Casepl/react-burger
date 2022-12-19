@@ -68,4 +68,5 @@
 
 .link {
     composes: link from '../common/common.module.css';
+    color: var(--text-primary-color);
 }

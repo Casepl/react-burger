@@ -46,7 +46,7 @@ const ProfileForm = () => {
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
+
     dispatch(patchUser(form));
   };
 

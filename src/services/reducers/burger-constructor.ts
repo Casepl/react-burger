@@ -1,17 +1,17 @@
 import {createReducer, PayloadAction} from '@reduxjs/toolkit';
 import {
-  addComponent, clearConstructor,
-  removeComponent,
-  updateConstructorList
+    addComponent, clearConstructor, IRemoveComponent,
+    removeComponent,
+    updateConstructorList
 } from '../actions/burger-constructor';
-import {ConstructorElementProps} from "../../constants/burgers-prop-type";
+import {ConstructorElementArrayType} from "../../constants/burgers-prop-type";
 
-const initialState: ConstructorElementProps[] = []
+const initialState: ConstructorElementArrayType = []
 
 export const burgerConstructorReducer  = createReducer(initialState,
   (builder) => {
     builder
-      .addCase(addComponent, (state, action: PayloadAction<ConstructorElementProps>) => {
+      .addCase(addComponent, (state, action) => {
         const newState = [...state];
 
         if(action.payload.type === 'bun') {
@@ -30,7 +30,7 @@ export const burgerConstructorReducer  = createReducer(initialState,
       .addCase(updateConstructorList, (state, action) => {
         return action.payload;
       })
-      .addCase(removeComponent, (state, action) => {
+      .addCase(removeComponent, (state, action: PayloadAction<IRemoveComponent>) => {
         return state.filter((item) =>
           item.dragId !== action.payload.dragId);
       }).addCase(clearConstructor, () => {

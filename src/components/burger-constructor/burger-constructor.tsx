@@ -23,8 +23,7 @@ import ConstructorElement
   from '../constructor-element/constructor-element';
 import styles from './burger-constructor.module.css';
 import {
-  ConstructorElementArrayType,
-  ingredientsArrayType
+  ConstructorElementArrayType, IIngredientProps
 } from "../../constants/burgers-prop-type";
 
 const initialState = { totalPrice: 0 };
@@ -64,7 +63,7 @@ const BurgerConstructor = () => {
 
   const { user } = useSelector((store) => store.auth);
 
-  const ingredients: ingredientsArrayType = useSelector((store) => store.burgerConstructor);
+  const ingredients = useSelector((store) => store.burgerConstructor);
 
   const isOrderLoading = useSelector((store) => store.order.orderRequest);
 
@@ -72,12 +71,11 @@ const BurgerConstructor = () => {
 
   const dispatch = useDispatch();
 
-  const [, dropTargetRef] = useDrop({
+  const [, dropTargetRef] = useDrop<IIngredientProps>({
     accept: 'ingredient',
     drop(item) {
-      // @ts-ignore
+
       dispatch(addComponent({
-        // @ts-ignore
         ...item,
         dragId: uuidv4()
       }));
@@ -115,7 +113,6 @@ const BurgerConstructor = () => {
 
     newCards.splice(hoverIndex, 0, dragCard);
 
-    // @ts-ignore
     dispatch(updateConstructorList(newCards));
   }, [ingredients, dispatch]);
 
@@ -124,9 +121,10 @@ const BurgerConstructor = () => {
       navigate('/login', { state: { redirectTo: '/' } });
       return;
     }
-    debugger;
+
     const ingridients = [elements.bun,
       ...(elements.constructorElements || []), elements.bun] as ConstructorElementArrayType;
+
     dispatch(applyOrder(ingridients));
   }, [user, navigate, dispatch,
     elements.bun, elements.constructorElements]);
@@ -163,7 +161,7 @@ const BurgerConstructor = () => {
       </div>
       <div className={styles['order-container']}>
         <TotalPrice total={state.totalPrice}/>
-        <Button disabled={isOrderLoading || !elements.bun}
+        <Button disabled={isOrderLoading || (!elements.bun || !elements?.constructorElements?.length)}
                 type="primary"
                 size="medium"
                 htmlType="button"
