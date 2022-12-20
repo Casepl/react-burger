@@ -1,0 +1,41 @@
+.list {
+    display: grid;
+    gap: 16px;
+    overflow: auto;
+    max-height: 400px;
+}
+
+.head {
+    display: flex;
+    justify-content: center;
+}
+.img {
+    display: inline-grid;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    background-color: var(--background);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid rgba(128, 26, 178, 1);
+}
+
+
+.ingredient-el {
+    display: flex;
+    align-items: center;
+}
+
+.ingredient-name {
+    flex-grow: 1;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-currency {
+    display: flex;
+}

@@ -1,10 +1,10 @@
 import cx from 'classnames';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/useSelector';
 import orderDoneImg from '../../images/order-done.png';
 import styles from './order-details.module.css';
 
 const OrderDetails = () => {
-  const orderId = useSelector((store: any) => store.order?.response.number);
+  const orderId = useSelector((store) => store.order.response?.number);
 
   return (
     <div className="pb-20">

@@ -1,6 +1,7 @@
 import React, {ChangeEvent, SyntheticEvent, useRef, useState} from 'react';
 import cx from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from "../../hooks/useDispatch";
+import { useSelector } from "../../hooks/useSelector";
 import {
   Button,
   EmailInput,
@@ -10,11 +11,11 @@ import styles from './profile-form.module.css';
 import { patchUser } from '../../services/actions/user';
 
 const ProfileForm = () => {
-  const { user } = useSelector((store: any) => {
+  const { user } = useSelector((store) => {
     return store.auth;
   });
 
-  const { errorUserPatchMessage, userPatchRequest } = useSelector((store: any) => {
+  const { errorUserPatchMessage, userPatchRequest } = useSelector((store) => {
     return store.user;
   })
 
@@ -45,12 +46,13 @@ const ProfileForm = () => {
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
+
     dispatch(patchUser(form));
   };
 
   const handleReset = () => {
-    setForm( {...user, password: ''});
+    setForm( {...(user ? {...user, password: ''}
+          : {email: '', name: '', password: ''}), password: ''});
   }
 
   return (

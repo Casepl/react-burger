@@ -6,7 +6,8 @@ import {
 import cx from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from "../../hooks/useDispatch";
+import { useSelector } from "../../hooks/useSelector";
 import { useNavigate } from 'react-router-dom';
 import { addComponent, updateConstructorList }
   from '../../services/actions/burger-constructor';
@@ -22,9 +23,7 @@ import ConstructorElement
   from '../constructor-element/constructor-element';
 import styles from './burger-constructor.module.css';
 import {
-  ConstructorElementArrayType,
-  ConstructorElementProps,
-  ingredientsArrayType
+  ConstructorElementArrayType, IIngredientProps
 } from "../../constants/burgers-prop-type";
 
 const initialState = { totalPrice: 0 };
@@ -62,22 +61,21 @@ const BurgerConstructor = () => {
   const [state, reactDispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
-  const { user } = useSelector((store: any) => store.auth);
+  const { user } = useSelector((store) => store.auth);
 
-  const ingredients: ingredientsArrayType = useSelector((store: any) => store.burgerConstructor);
+  const ingredients = useSelector((store) => store.burgerConstructor);
 
-  const isOrderLoading = useSelector((store: any) => store.order.orderRequest);
+  const isOrderLoading = useSelector((store) => store.order.orderRequest);
 
-  const order = useSelector((store: any) => store.order.response);
+  const order = useSelector((store) => store.order.response);
 
   const dispatch = useDispatch();
 
-  const [, dropTargetRef] = useDrop({
+  const [, dropTargetRef] = useDrop<IIngredientProps>({
     accept: 'ingredient',
     drop(item) {
-      // @ts-ignore
+
       dispatch(addComponent({
-        // @ts-ignore
         ...item,
         dragId: uuidv4()
       }));
@@ -115,7 +113,6 @@ const BurgerConstructor = () => {
 
     newCards.splice(hoverIndex, 0, dragCard);
 
-    // @ts-ignore
     dispatch(updateConstructorList(newCards));
   }, [ingredients, dispatch]);
 
@@ -125,9 +122,10 @@ const BurgerConstructor = () => {
       return;
     }
 
-    // @ts-ignore
-    dispatch(applyOrder([elements.bun,
-    ...(elements.constructorElements || []), elements.bun]));
+    const ingridients = [elements.bun,
+      ...(elements.constructorElements || []), elements.bun] as ConstructorElementArrayType;
+
+    dispatch(applyOrder(ingridients));
   }, [user, navigate, dispatch,
     elements.bun, elements.constructorElements]);
 
@@ -163,7 +161,7 @@ const BurgerConstructor = () => {
       </div>
       <div className={styles['order-container']}>
         <TotalPrice total={state.totalPrice}/>
-        <Button disabled={isOrderLoading || !elements.bun}
+        <Button disabled={isOrderLoading || (!elements.bun || !elements?.constructorElements?.length)}
                 type="primary"
                 size="medium"
                 htmlType="button"

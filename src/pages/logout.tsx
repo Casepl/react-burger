@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from '../hooks/useDispatch';
+import { useSelector } from '../hooks/useSelector';
 import { logout } from '../services/actions/logout';
 import { Navigate } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ const Logout = () => {
   const dispatch = useDispatch();
 
   useEffect(()=>{
-    // @ts-ignore
+
     dispatch(logout());
   }, [dispatch]);
 

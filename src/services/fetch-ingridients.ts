@@ -1,8 +1,10 @@
 import { INGREDIENTS_URL } from '../constants/url-list';
 import {requestWithCheckResponse} from "../utils/request-with-check-response";
+import {IIngredientsResponse} from "./types/data";
+
 
 const fetchIngredients = () => {
-  return requestWithCheckResponse(INGREDIENTS_URL, {});
+  return requestWithCheckResponse<IIngredientsResponse>(INGREDIENTS_URL, {});
 };
 
 export default fetchIngredients;

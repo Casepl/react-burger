@@ -1,14 +1,15 @@
 import { ORDERS_URL } from '../constants/url-list';
-import { ingredientsArrayType } from "../constants/burgers-prop-type";
+import {ConstructorElementArrayType} from "../constants/burgers-prop-type";
 import {IOrderResponse} from "./types/data";
 import {requestWithCheckResponse} from "../utils/request-with-check-response";
 
-const sendOrder = (ingredients: ingredientsArrayType) => {
+const sendOrder = (ingredients: ConstructorElementArrayType) => {
   const ids = ingredients.map(({ _id }) => _id);
 
   return requestWithCheckResponse<IOrderResponse>(ORDERS_URL, {
     method: 'POST',
     body: JSON.stringify({ ingredients: ids }),
+    withAuth: true,
     withCheckResponse: true
   })
     .then((json) => {

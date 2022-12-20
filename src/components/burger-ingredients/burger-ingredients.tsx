@@ -4,7 +4,8 @@ import {
   useCallback,
   useRef
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from "../../hooks/useDispatch";
+import { useSelector } from "../../hooks/useSelector";
 import { tabSwitch } from '../../services/actions/tab-switch';
 import { useInView } from 'react-intersection-observer';
 import cx from 'classnames';
@@ -12,9 +13,9 @@ import Tabs from '../tabs/tabs';
 import Group from '../tile-group/tile-group';
 import styles from './burger-ingredients.module.css';
 
-import type { ConstructorElementProps } from "../../constants/burgers-prop-type";
+import type {IIngredientProps} from "../../constants/burgers-prop-type";
 
-const filterTypes = (type: string) => (item: ConstructorElementProps) => {
+const filterTypes = (type: string) => (item: IIngredientProps) => {
   return item.type === type;
 };
 
@@ -63,21 +64,21 @@ const BurgerIngredients = () => {
 
   useEffect(() => {
     if (inViewBuns) {
-      // @ts-ignore
+
       dispatch(tabSwitch('buns'));
     } else if (inViewSauces) {
-      // @ts-ignore
+
       dispatch(tabSwitch('sauces'));
     } else if (inViewFilling) {
-      // @ts-ignore
+
       dispatch(tabSwitch('mains'));
     }
   }, [dispatch, inViewBuns, inViewFilling, inViewSauces]);
 
   const { ingredientsRequest, ingredients } =
-    useSelector((store: any) => store.ingredients);
+    useSelector((store) => store.ingredients);
   const constructorElements =
-    useSelector((store: any) => store.burgerConstructor);
+    useSelector((store) => store.burgerConstructor);
 
   const counterMap = useMemo(() => {
     const map = new Map();

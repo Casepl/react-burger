@@ -20,7 +20,7 @@ const menu = [
   },
   {
     Icon: ListIcon,
-    to: '/profile/orders',
+    to: '/feed',
     title: 'Лента заказов'
   }
 ];
@@ -43,7 +43,7 @@ function AppHeader() {
         <Link to='/'><Logo/></Link>
         <div className={style.login}>
           <HeaderBlock Icon={ProfileIcon} to='/profile' title="Личный кабинет"
-                       isActive={!!matchPath(pathname, '/profile')}
+                       isActive={!!matchPath({path: '/profile/*'}, pathname)}
                        isLast={true}/>
         </div>
       </div>

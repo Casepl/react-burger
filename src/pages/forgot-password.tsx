@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, ChangeEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from '../hooks/useDispatch';
+import { useSelector } from '../hooks/useSelector';
 import { Link } from 'react-router-dom';
 import { forgotPassword } from '../services/actions/forgot-password';
 import cx from 'classnames';
@@ -38,7 +39,7 @@ const ForgotPassword = () => {
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
+
     dispatch(forgotPassword(email));
   };
 

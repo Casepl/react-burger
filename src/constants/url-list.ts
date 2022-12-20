@@ -1,5 +1,5 @@
 const BASE_API_URL = 'https://norma.nomoreparties.space/api';
-
+const SOCKET_URL = 'wss://norma.nomoreparties.space'
 export const INGREDIENTS_URL = `${BASE_API_URL}/ingredients`;
 export const ORDERS_URL = `${BASE_API_URL}/orders`;
 export const FORGOT_PASSWORD_URL = `${BASE_API_URL}/password-reset`;
@@ -9,3 +9,5 @@ export const REGISTRATION_URL = `${BASE_API_URL}/auth/register`;
 export const USER_URL = `${BASE_API_URL}/auth/user`;
 export const LOGOUT_URL = `${BASE_API_URL}/auth/logout`;
 export const REFRESH_TOKEN_URL = `${BASE_API_URL}/auth/token`;
+export const FEED_SOCKET_URL = `${SOCKET_URL}/orders/all`;
+export const ORDERS_SOCKET_URL = `${SOCKET_URL}/orders`

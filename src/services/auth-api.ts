@@ -25,11 +25,12 @@ const loginApi = async (form: { email: string, password: string}) => {
     });
 };
 
-const loginOutApi = async (data: { refreshToken: string}) => {
+const loginOutApi = async (data: { refreshToken: string | null}) => {
   return await requestWithCheckResponse(LOGOUT_URL,
     {
       method: 'POST',
-      body: JSON.stringify(data)
+      withAuth: true,
+      body: JSON.stringify({token: data.refreshToken})
     });
 };
 
@@ -58,7 +59,7 @@ const getUserApi = () => {
   return request<IResponseUser>(USER_URL, { withAuth: true });
 };
 
-const patchUserApi = (form: {email: string, name: string, password: string}) => {
+const patchUserApi = (form: {email?: string, name?: string, password?: string}) => {
   return request<IResponseUser>(USER_URL,
     {
       withAuth: true,
@@ -67,7 +68,7 @@ const patchUserApi = (form: {email: string, name: string, password: string}) => 
     });
 };
 
-const refreshTokenRequest = async (data: {token: string}) => {
+const refreshTokenRequest = async (data: {token: string | null}) => {
   return await request<ITokenResponse>(REFRESH_TOKEN_URL, {
     method: 'POST',
     body: JSON.stringify(data)
