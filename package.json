@@ -59,5 +59,6 @@
     "cypress": "^12.2.0",
     "eslint-plugin-cypress": "^2.12.1",
     "jest": "^29.3.1"
-  }
+  },
+  "homepage": "https://casepl.github.io/react-burger"
 }
