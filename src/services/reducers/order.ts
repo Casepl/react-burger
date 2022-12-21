@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { request, success, error, clearOrder, clearError } from '../actions/order';
 
-interface IOrderState {
+export interface IOrderState {
   orderFailed: boolean;
   response: null | { number: number },
   orderRequest: boolean

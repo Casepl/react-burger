@@ -89,6 +89,7 @@ const Element = ({ item, index, moveCard }: ElementProps ) => {
   return (
     <div
         ref={ref}
+        data-test-id={`${item.type}`}
         style={{ opacity }}
         onDrop={preventDefault}
         data-handler-id={handlerId}

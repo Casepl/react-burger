@@ -24,7 +24,8 @@ const Tile = (props: ITileProps) => {
       _id,
       name,
       image,
-      price
+      price,
+      type
     },
     count
   } = props;
@@ -40,6 +41,7 @@ const Tile = (props: ITileProps) => {
 
   return (
     <Link
+      data-test-id={`${type}`}
       state={{ background: location }}
       to={{
         pathname: `/ingredients/${_id}`,

@@ -65,7 +65,7 @@ const Login = () => {
           onChange={handleChange} value={form.password}
           name={'password'}/>
         <div className={styles['button-wrapper']}>
-          <Button htmlType="submit"
+          <Button data-test-id="login-button" htmlType="submit"
                   disabled={loginRequest || (!form.email && !form.password)}>Войти</Button>
         </div>
         {errorMessage &&

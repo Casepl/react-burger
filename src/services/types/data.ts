@@ -1,5 +1,4 @@
 import {IIngredientProps} from "../../constants/burgers-prop-type";
-import exp from "constants";
 
 export interface IOrderResponse {
     readonly name: string,

@@ -8,7 +8,7 @@ import {WS_FEED_CONNECTION_SUCCESS,
 import type { TFeedActions } from '../actions/feed';
 import {IOrder} from "../types/data";
 
-interface IFeedInitialState {
+export interface IFeedInitialState {
     wsConnected: boolean
     total: number
     totalToday: number

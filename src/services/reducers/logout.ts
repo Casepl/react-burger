@@ -4,9 +4,16 @@ import {
 }
   from '../actions/logout';
 
-const initialState = {
+export interface ILogoutInitialState{
+  logoutRequest: boolean
+  logoutRequestFailed: boolean
+  errorMessage: string
+}
+
+const initialState: ILogoutInitialState = {
   logoutRequest: false,
   logoutRequestFailed: false,
+  errorMessage: ''
 };
 
 export const logoutReducer = createReducer(initialState,

@@ -140,7 +140,7 @@ const BurgerConstructor = () => {
   }, [dispatch]);
 
   return (
-    <div className={cx('pt-25 pl-4 pr-4')}
+    <div data-test-id="burger-constructor-drop" className={cx('pt-25 pl-4 pr-4')}
          ref={dropTargetRef}>
       <div className={cx(styles['constructor-wrapper'], 'mb-10')}>
         {elements.bun && (<Bun bun={elements.bun} type="top"/>)}
@@ -161,7 +161,8 @@ const BurgerConstructor = () => {
       </div>
       <div className={styles['order-container']}>
         <TotalPrice total={state.totalPrice}/>
-        <Button disabled={isOrderLoading || (!elements.bun || !elements?.constructorElements?.length)}
+        <Button data-test-id="order-button"
+                disabled={isOrderLoading || (!elements.bun || !elements?.constructorElements?.length)}
                 type="primary"
                 size="medium"
                 htmlType="button"
