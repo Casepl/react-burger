@@ -1,6 +1,0 @@
-.list {
-    display: grid;
-    gap: 16px;
-    overflow: auto;
-    max-height: 800px;
-}
