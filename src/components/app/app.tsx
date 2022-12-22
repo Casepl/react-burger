@@ -49,7 +49,7 @@ function App() {
 
   return (
     <div className={styles.root}>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router>
         <ModalRoutes />
       </Router>
       {error &&
