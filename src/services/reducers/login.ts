@@ -4,7 +4,12 @@ import {
 }
   from '../actions/login';
 
-const initialState = {
+export interface ILoginInitialState {
+  loginRequest: boolean,
+  loginRequestFailed: boolean,
+  errorMessage: string
+}
+const initialState: ILoginInitialState = {
   loginRequest: false,
   loginRequestFailed: false,
   errorMessage: '',

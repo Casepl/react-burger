@@ -10,6 +10,7 @@ const OrderDetails = () => {
     <div className="pb-20">
       <div className="mb-8 mt-4">
         <p
+          data-test-id='order-id'
           className={cx(
             'text text_type_digits-large',
             styles['center-text'],

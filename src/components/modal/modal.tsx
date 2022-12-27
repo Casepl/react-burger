@@ -22,7 +22,12 @@ const ModalHeader = (props: IModalHeaderProps) => {
                 {children}
            </div>
             <div>
-                <Button extraClass={styles['reset-button-padding']} type="secondary" size="small" htmlType='button' onClick={onClose}>
+                <Button data-test-id='modal-close-button'
+                        extraClass={styles['reset-button-padding']}
+                        type="secondary"
+                        size="small"
+                        htmlType='button'
+                        onClick={onClose}>
                     <CloseIcon type='primary' />
                 </Button>
             </div>

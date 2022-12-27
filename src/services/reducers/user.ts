@@ -9,17 +9,17 @@ import {
 }
   from '../actions/user';
 
-interface IUserIntitalState{
+export interface IUserInitialState {
   userRequest: boolean,
   userRequestFailed: boolean,
   errorMessage: string,
   userPatchRequest: boolean,
   userPatchFailed: boolean,
   errorUserPatchMessage: string,
-  patchUserMessage: string,
-};
+  patchUserMessage: string
+}
 
-const initialState: IUserIntitalState = {
+const initialState: IUserInitialState = {
   userRequest: false,
   userRequestFailed: false,
   errorMessage: '',

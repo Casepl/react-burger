@@ -33,7 +33,7 @@ const Bun: FC<IBunProps> = (props) => {
   return (
     <>
       {name && (
-        <div className={cx(styles['container'], 'pl-8')}>
+        <div data-test-id={`bun`} className={cx(styles['container'], 'pl-8')}>
           <ConstructorElement
             key={_id}
             type={type}

@@ -4,7 +4,7 @@ import {
 }
   from '../actions/registration';
 
-interface IRegistrationState {
+export interface IRegistrationState {
   registrationRequest: boolean,
   registrationFailed: boolean,
   errorMessage: string

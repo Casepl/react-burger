@@ -1,7 +1,7 @@
 import {createReducer, PayloadAction} from '@reduxjs/toolkit'
 import {request, success, error} from '../actions/forgot-password';
 
-interface IForgotPassword {
+export interface IForgotPassword {
   forgotPasswordFailed: boolean,
   message: string,
   errorMessage: string,

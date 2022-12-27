@@ -8,10 +8,10 @@ interface ICFPItem {
     quantity: number
 }
 const CFPItem = (props: ICFPItem) => {
-  const {name, quantity} = props;
+  const {name, quantity } = props;
 
   return (
-    <div>
+    <div data-test-id='ingredient-detail-item'>
       <p className="text text_type_main-default text_color_inactive">{name}</p>
       <p className={cx(
         "text text_type_digits-default text_color_inactive",

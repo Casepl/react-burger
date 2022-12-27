@@ -1,7 +1,7 @@
 import {createReducer, PayloadAction} from '@reduxjs/toolkit'
 import { request, success, error } from '../actions/reset-password';
 
-interface IResetPasswordState {
+export interface IResetPasswordState {
   resetPasswordFailed: boolean,
   message: string,
   errorMessage: string,
@@ -29,9 +29,9 @@ export const resetPasswordReducer  = createReducer(initialState,
           errorMessage: '', isPasswordResetSuccess: true };
       })
       .addCase(error, (state, action: PayloadAction<string>) => {
-        return { ...state, resetPasswordRequest: true,
+        return { ...state, resetPasswordRequest: false,
           isPasswordResetSuccess: false,
           errorMessage: action.payload, message: '',
-          resetPasswordFailed: false };
+          resetPasswordFailed: true };
       });
   });

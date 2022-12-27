@@ -3,7 +3,7 @@ import { request, success, error, clearError } from '../actions/ingridients';
 import {IIngredientActionGet} from "../types/data";
 import {IIngredientProps} from "../../constants/burgers-prop-type";
 
-interface IIngredientsState {
+export interface IIngredientsState {
   ingredientsFailed: boolean,
   ingredients: IIngredientProps[],
   ingredientsRequest: boolean
@@ -23,7 +23,7 @@ export const ingredientsReducer  = createReducer(initialState,
       return { ...state, ingredientsRequest: true };
     })
     .addCase(success, (state, action: PayloadAction<IIngredientActionGet>) => {
-      return { ...state,  ingredientsFailed: false, ingredients: action.payload.items, itemsRequest: false };
+      return { ...state,  ingredientsFailed: false, ingredients: action.payload.items, ingredientsRequest: false };
     })
     .addCase(error, (state) => {
       return { ...state, ingredientsFailed: true, ingredientsRequest: false };

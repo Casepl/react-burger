@@ -2,13 +2,13 @@ import {WS_ORDERS_CONNECTION_SUCCESS,
     WS_ORDERS_CONNECTION_CLOSED,
     WS_ORDERS_CONNECTION_ERROR,
     WS_ORDERS_GET_MESSAGE
-} from "../actions/orders";
+} from '../actions/orders';
 
 
 import type { TOrdersActions } from '../actions/orders';
-import {IOrder} from "../types/data";
+import { IOrder } from '../types/data';
 
-interface IOrdersInitialState {
+export interface IOrdersInitialState {
     wsConnected: boolean
     total: number
     totalToday: number
